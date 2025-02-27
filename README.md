@@ -1,4 +1,4 @@
-# [prog2-25-A5]
+# [Gestión de festivales]
 [//]: # (Incluid aquí la descripción de vuestra aplicación. Por cierto, así se ponen comentarios en Markdown)
 
 ## Autores
