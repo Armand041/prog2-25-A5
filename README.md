@@ -1,5 +1,4 @@
-# prog2-25-A5
-# [Título]
+# [prog2-25-A5]
 [//]: # (Incluid aquí la descripción de vuestra aplicación. Por cierto, así se ponen comentarios en Markdown)
 
 ## Autores
