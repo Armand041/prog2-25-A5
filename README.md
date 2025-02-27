@@ -3,11 +3,11 @@
 
 ## Autores
 
-* (Coordinador) [Nombre 1 Apellido 1 Apellido 1](https://github.com/alumno1)
-* [Nombre 2 Apellido 2 Apellido 2](https://github.com/alumno2)
-* [Nombre 3 Apellido 3 Apellido 3](https://github.com/alumno3)
-* [Nombre 4 Apellido 4 Apellido 4](https://github.com/alumno4)
-* [Nombre 5 Apellido 5 Apellido 5](https://github.com/alumno5)
+* (Coordinador) [Daniel Paredes Valverde](https://github.com/alumno1)
+* [David Diez Pérez ](https://github.com/alumno2)
+* [Maria Ripoll Gomis ](https://github.com/alumno3)
+* [Pablo serna Soriano](https://github.com/PabloSerna4542)
+* [Raúl Uclés Lajara ](https://github.com/alumno5)
 
 ## Profesor
 [//]: # (Dejad a quien corresponda)
@@ -15,7 +15,23 @@
 
 ## Requisitos
 [//]: # (Indicad aquí los requisitos de vuestra aplicación, así como el alumno responsable de cada uno de ellos)
-* ... (Alumno x)
+- Crear, modificar y eliminar festivales (lugar, fecha, duración): Raúl Uclés Lajara 
+
+- Añadir artistas invitados (canciones a cantar, dias que cantan, duración) : Pablo Serna Soriano 
+
+- Añadir servicios y staff a los diferentes festivales (que ofrecen, precio, horario): Maria Ripoll Gomis 
+
+- Diferentes tipos de entradas (VIP, normales, front-stage) y disponibilidad (stock/aforo) : David Díez Pérez 
+
+- Permitirá acceder a canciones populares de los artistas (API de Spotify o Youtube): Daniel Paredes Valverde 
+
+- Permitirá descargar un PDF con la información del usuario asistente al evento: Maria Ripoll Gomis 
+
+- Acceder a Redes Sociales de los artistas (API Instagram, TikTok): Daniel Paredes Valverde 
+
+- Permitirá descargar un cartel con información del festival: Pablo Serna Soriano 
+
+- Base de datos con la información de los eventos: Raúl Uclés Lajara 
 
 ## Instrucciones de instalación y ejecución
 [//]: # (Indicad aquí qué habría que hacer para ejecutar vuestra aplicación)
