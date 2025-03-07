@@ -1,4 +1,4 @@
-# [Gestión de festivales]
+# Gestión de festivales
 [//]: # (Incluid aquí la descripción de vuestra aplicación. Por cierto, así se ponen comentarios en Markdown)
 Este proyecto busca simplificar el almacenamiento y estructuración de festivales, para ayudar a clientes y organizadores a tener una mejor idea de la organización de sus eventos musicales favoritos. Permitirá planear, modificar y ejecutar varios festivales en diferentes lugares y tiempos. Añdiendo también una lista de artistas invitados, que contará con la opción de poder escuchar las canciones y comprar entradas para los diferentes festivales. 
 
