@@ -48,8 +48,8 @@ class Staff(Persona):
             Horario en el que trabaja el empleado, debe ser hora_inicio-hora_fin, por ejemplo: 9:00-5:00
         """
         super().__init__(edad, nombre, dni)
-        self.sueldo=sueldo
-        self.horario=horario
+        self.__sueldo=sueldo
+        self.__horario=horario
 
     def actualizar_sueldo(self, nuevo_sueldo: float) -> None :
         """
@@ -60,7 +60,7 @@ class Staff(Persona):
         nuevo_sueldo: float
             Valor nuevo del sueldo del empleado
         """
-        self.sueldo=nuevo_sueldo
+        self.__sueldo=nuevo_sueldo
 
     def cambiar_horario(self, nuevo_horario: str) -> None :
         """
@@ -71,4 +71,4 @@ class Staff(Persona):
         nuevo_horario: str
             Horario nuevo que recibirá el empleado
         """
-        self.horario=nuevo_horario
+        self.__horario=nuevo_horario

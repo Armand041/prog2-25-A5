@@ -53,7 +53,7 @@ class Artista(Staff):
             Lista con las canciones populares del artista
         """
         super().__init__(edad, nombre, dni, sueldo, horario)
-        self.canciones_populares=canciones_populares
+        self.__canciones_populares=canciones_populares
 
 
     def anyadir_cancion(self, nueva_cancion: str) -> None :
@@ -65,8 +65,8 @@ class Artista(Staff):
         nueva_cancion: str
             Canción que se desea añadir a la lista de canciones populares
         """
-        if nueva_cancion not in self.canciones_populares:
-            self.canciones_populares.append(nueva_cancion)
+        if nueva_cancion not in self.__canciones_populares:
+            self.__canciones_populares.append(nueva_cancion)
 
     def eliminar_cancion(self, cancion: str) -> None :
         """
@@ -77,5 +77,5 @@ class Artista(Staff):
         cancion: str
             Canción que se desea eliminar de la lista de canciones populares
         """
-        if cancion in self.canciones_populares:
-            self.canciones_populares.remove(cancion)
+        if cancion in self.__canciones_populares:
+            self.__canciones_populares.remove(cancion)
