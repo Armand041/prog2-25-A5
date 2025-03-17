@@ -17,6 +17,9 @@ class Staff(Persona):
             Sueldo por hora del trabajador
         horario: str
             Horario en el que trabaja el empleado
+        puesto_trabajo: object
+            Objeto de tipo servicio en el que el empleado trabaja. Cada empleado solamente podrá estar
+            relacionado con un solo puesto de trabajo.
 
     Metodos:
     -------------
@@ -30,7 +33,7 @@ class Staff(Persona):
         Reemplaza el horario del trabajador por nuevo_horario.
     """
 
-    def __init__(self, edad : int, nombre: str, dni: str, sueldo: float, horario: str ) -> None :
+    def __init__(self, edad : int, nombre: str, dni: str, sueldo: float, horario: str, puesto_trabajo: object ) -> None :
         """
         Metodo constructor
 
@@ -46,10 +49,13 @@ class Staff(Persona):
             Sueldo por hora del trabajador
         horario: str
             Horario en el que trabaja el empleado, debe ser hora_inicio-hora_fin, por ejemplo: 9:00-5:00
+        puesto_trabajo: object
+            objeto de tipo servicio en el que el empleado trabaja
         """
         super().__init__(edad, nombre, dni)
         self.__sueldo=sueldo
         self.__horario=horario
+        self.__puesto_trabajo=puesto_trabajo
 
     def actualizar_sueldo(self, nuevo_sueldo: float) -> None :
         """
@@ -72,3 +78,14 @@ class Staff(Persona):
             Horario nuevo que recibirá el empleado
         """
         self.__horario=nuevo_horario
+
+    def cambiar_puesto(self, nuevo_puesto: str) -> None :
+        """
+        Metodo que reemplaza el puesto de trabajo de un trabajador
+
+        Parámetros:
+        ---------------
+        nuevo_puesto: str
+            Puesto de trabajo nuevo que recibirá el empleado
+        """
+        self.__puesto_trabajo=nuevo_puesto
