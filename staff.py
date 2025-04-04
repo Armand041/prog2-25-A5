@@ -79,7 +79,7 @@ class Staff(Persona):
         """
         self.__horario=nuevo_horario
 
-    def cambiar_puesto(self, nuevo_puesto: str) -> None :
+    def cambiar_puesto(self, nuevo_puesto: object) -> None :
         """
         Metodo que reemplaza el puesto de trabajo de un trabajador
 

@@ -1,5 +1,7 @@
 from staff import Staff
 from typing import List
+from cancion_no_encontrada_error import CancionNoEncontrada
+from cancion_ya_existe_error import CancionYaExiste
 
 class Artista(Staff):
     """
@@ -67,10 +69,13 @@ class Artista(Staff):
         """
         if nueva_cancion not in self.__canciones_populares:
             self.__canciones_populares.append(nueva_cancion)
+        else:
+            raise CancionYaExiste(nueva_cancion, self.nombre)
 
     def eliminar_cancion(self, cancion: str) -> None :
         """
-        Elimina una de las canciones de la lista de canciones populares del artista solo si esta se encuentra en la lista
+        Elimina una de las canciones de la lista de canciones populares del artista solo si esta se encuentra en la lista,
+        si no está elevará un error.
 
         Parámetros:
         --------------
@@ -79,3 +84,5 @@ class Artista(Staff):
         """
         if cancion in self.__canciones_populares:
             self.__canciones_populares.remove(cancion)
+        else:
+            raise CancionNoEncontrada(cancion, self.nombre)
