@@ -74,7 +74,7 @@ class Staff(Persona):
         nuevo_sueldo: float
             Valor nuevo del sueldo del empleado
         """
-        if type(nuevo_sueldo)==int:
+        if type(nuevo_sueldo)==float:
             self.__sueldo=nuevo_sueldo
         else:
             print('Sueldo no válido, prueba con un número entero')
