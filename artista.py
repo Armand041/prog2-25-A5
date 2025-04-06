@@ -83,7 +83,7 @@ class Artista(Staff):
         if nueva_cancion not in self.__canciones_populares:
             self.__canciones_populares.append(nueva_cancion)
         else:
-            raise CancionYaExiste(nueva_cancion, self.__nombre)
+            raise CancionYaExiste(nueva_cancion, self._nombre)
 
     def eliminar_cancion(self, cancion: str) -> None :
         """
@@ -98,4 +98,4 @@ class Artista(Staff):
         if cancion in self.__canciones_populares:
             self.__canciones_populares.remove(cancion)
         else:
-            raise CancionNoEncontrada(cancion, self.__nombre)
+            raise CancionNoEncontrada(cancion, self._nombre)

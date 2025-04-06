@@ -74,7 +74,10 @@ class Staff(Persona):
         nuevo_sueldo: float
             Valor nuevo del sueldo del empleado
         """
-        self.__sueldo=nuevo_sueldo
+        if type(nuevo_sueldo)==int:
+            self.__sueldo=nuevo_sueldo
+        else:
+            print('Sueldo no válido, prueba con un número entero')
 
     def cambiar_horario(self, nuevo_horario: str) -> None :
         """
@@ -85,7 +88,10 @@ class Staff(Persona):
         nuevo_horario: str
             Horario nuevo que recibirá el empleado
         """
-        self.__horario=nuevo_horario
+        if type(nuevo_horario)==str:
+            self.__horario=nuevo_horario
+        else:
+            print('Horario no válido')
 
     def cambiar_puesto(self, nuevo_puesto: object) -> None :
         """

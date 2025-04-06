@@ -41,7 +41,7 @@ class Persona:
             Segundo apellido (si tiene) de la persona. Si carece de él será None
         """
         self.__fecha_nacimiento = fecha_nacimiento
-        self.__nombre = nombre
+        self._nombre = nombre
         self.__apellido1 = apellido1
         self.__apellido2 = apellido2
         self.__dni = dni
