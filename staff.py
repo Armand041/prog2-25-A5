@@ -1,4 +1,4 @@
-# from persona import Persona
+from persona import Persona
 
 class Staff(Persona):
     """
@@ -7,12 +7,16 @@ class Staff(Persona):
 
     Atributos:
     -------------
-    edad: int
-            Edad del trabajador
-        nombre: str
-            Nombre del trabajador
+        fecha_nacimiento: str
+            Fecha de nacimiento del trabajador
         dni: str
             Dni del trabajador
+        nombre: str
+            Nombre del trabajador
+        apellido1: str
+            Primer apellido del trabajador
+        apellido2: str
+            Segundo apellido (si tiene) del trabajador
         sueldo: float
             Sueldo por hora del trabajador
         horario: str
@@ -23,7 +27,7 @@ class Staff(Persona):
 
     Metodos:
     -------------
-    __init__(self, edad : int, nombre: str, dni: str, sueldo: float, horario: str ) -> None:
+    __init__(self, fecha_nacimiento : str, nombre: str, dni: str, sueldo: float, horario: str ) -> None:
         Constructor del objeto, llamará a la clase Persona para sus atributos comunes.
 
     actualizar_sueldo(self, nuevo_sueldo: float) -> None :
@@ -33,18 +37,22 @@ class Staff(Persona):
         Reemplaza el horario del trabajador por nuevo_horario.
     """
 
-    def __init__(self, edad : int, nombre: str, dni: str, sueldo: float, horario: str, puesto_trabajo: object ) -> None :
+    def __init__(self, fecha_nacimiento : str, dni: str, nombre: str, apellido1: str, sueldo: float, horario: str, puesto_trabajo: object, apellido2: str = None ) -> None :
         """
         Metodo constructor
 
         Parámetros:
         -----------------
-        edad: int
-            Edad del trabajador
+        fecha_nacimiento: str
+            Fecha de nacimiento del trabajador en formato dd/mm/aaaa
+        dni: str
+            Dni del trabajador. Forma primaria de identificacion
         nombre: str
             Nombre del trabajador
-        dni: str
-            Dni del trabajador
+        apellido1: str
+            Primer apellido del trabajador
+        apellido2: str
+            Segundo apellido (si tiene) del trabajador. Si carece de él será None
         sueldo: float
             Sueldo por hora del trabajador
         horario: str
@@ -52,7 +60,7 @@ class Staff(Persona):
         puesto_trabajo: object
             objeto de tipo servicio en el que el empleado trabaja
         """
-        super().__init__(edad, nombre, dni)
+        super().__init__(fecha_nacimiento, dni, nombre, apellido1, apellido2)
         self.__sueldo=sueldo
         self.__horario=horario
         self.__puesto_trabajo=puesto_trabajo

@@ -10,16 +10,22 @@ class Artista(Staff):
 
     Atributos:
     -------------
-    edad: int
-            Edad del arista
-        nombre: str
-            Nombre del arista
+        fecha_nacimiento: str
+            Fecha de nacimiento del artista
         dni: str
             Dni del arista
+        nombre: str
+            Nombre del arista
+        apellido1: str
+            Primer apellido del artista
+        apellido2: str
+            Segundo apellido del artista
         sueldo: float
             Sueldo por hora del arista
         horario: str
             Horario en el que trabaja el arista
+        puesto_trabajo: object
+            Puesto de trabajo del artista
         canciones_populares: List[str]
             Canciones más populares del artista
 
@@ -35,26 +41,33 @@ class Artista(Staff):
         Elimina una de las canciones de la lista de canciones populares del artista.
     """
 
-    def __init__(self, edad: int, nombre: str, dni: str, sueldo: float, horario: str, canciones_populares: List[str]) -> None:
+    def __init__(self, fecha_nacimiento: str, dni: str, nombre: str, apellido1: str,sueldo: float, horario: str, canciones_populares: List[str], apellido2: str = None) -> None:
         """
         Metodo constructor
 
         Parámetros:
         -----------------
-        edad: int
-            Edad del artista
+        fecha_nacimiento: str
+            Fecha de nacimiento del artista en el formato dd/mm/aaaa
+        dni: str
+            Dni del artista. Forma principal de identificación
         nombre: str
             Nombre del artista
-        dni: str
-            Dni del artista
+        apellido1: str
+            Primer apellido del artista
+        apellido2: str
+            Segundo apellido (si tiene) del artista. Si carece de él será None
         sueldo: float
             Sueldo por hora del artista
         horario: str
             Horario en el que trabaja el artista, debe ser hora_inicio-hora_fin, por ejemplo: 9:00-5:00
+        puesto_trabajo: object
+            Puesto de trabajo del artista es ser artista, por lo que tomará siempre el objeto Artista.
         canciones_populares: List[str]
             Lista con las canciones populares del artista
         """
-        super().__init__(edad, nombre, dni, sueldo, horario)
+        puesto_trabajo = type(self)
+        super().__init__(fecha_nacimiento, dni, nombre, apellido1, sueldo, horario, puesto_trabajo, apellido2)
         self.__canciones_populares=canciones_populares
 
 
@@ -70,7 +83,7 @@ class Artista(Staff):
         if nueva_cancion not in self.__canciones_populares:
             self.__canciones_populares.append(nueva_cancion)
         else:
-            raise CancionYaExiste(nueva_cancion, self.nombre)
+            raise CancionYaExiste(nueva_cancion, self.__nombre)
 
     def eliminar_cancion(self, cancion: str) -> None :
         """
@@ -85,4 +98,4 @@ class Artista(Staff):
         if cancion in self.__canciones_populares:
             self.__canciones_populares.remove(cancion)
         else:
-            raise CancionNoEncontrada(cancion, self.nombre)
+            raise CancionNoEncontrada(cancion, self.__nombre)
