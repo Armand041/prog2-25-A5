@@ -1,58 +1,39 @@
-from flask import Flask, request, session, url_for, redirect
-
-from spotipy import Spotify
-from spotipy.oauth2 import SpotifyOAuth
-from spotipy.cache_handler import FlaskSessionCacheHandler
-
-app = Flask(__name__)
-app.config['SECRET_KEY'] = 'llave_secreta'
-
-client_id = '13806cf7187b4de487777fe679d594e8'
-client_secret = 'c338bbe63d1345e98770e217ab055b61'
-redirect_uri = 'http://localhost:5000/callback'
-scope = 'playlist-read-private'
-
-cache_handler = FlaskSessionCacheHandler(session)
-sp_oauth = SpotifyOAuth(
-    client_id=client_id,
-    client_secret=client_secret,
-    redirect_uri=redirect_uri,
-    scope=scope,
-    cache_handler=cache_handler,
-    show_dialog=True
-)
-
-sp = Spotify(oauth_manager=sp_oauth)
-
-@app.route('/')
-def home():
-    if not sp_oauth.validate_token(cache_handler.get_cached_token()):
-        auth_url = sp_oauth.get_authorize_url()
-        return redirect(auth_url)
-    return redirect(url_for('get_playlists'))
-
-@app.route('/callback')
-def callback():
-    sp_oauth.get_access_token(request.args['code'])
-    return redirect(url_for('get_playlists'))
-
-@app.route('/get_playlist')
-def get_playlists():
-    if not sp_oauth.validate_token(cache_handler.get_cached_token()):
-        auth_url = sp_oauth.get_authorize_url()
-        return redirect(auth_url)
-
-    playlists = sp.current_user_playlists()
-    playlists_info = [(pl['name'], pl['external_urls']['spotify']) for pl in playlists['items']]
-    playlists_html = '<br>'.join(f'{name}: {url}' for name, url in playlists_info)
-
-    return playlists_html
-
-@app.route('/logout')
-def logout():
-    session.clear()
-    return redirect(url_for('home'))
+import spotipy
+from spotipy.oauth2 import SpotifyClientCredentials
+from artista_no_encontrado import ArtistaNoEncontrado
 
 
-if __name__ == '__main__':
-    app.run(debug=True)
+class InformacionArtista:
+    __artistas = {'Cosmo Sheldrake': '6hV6oxGLeLFw17DGjIPkYD'}
+    __spotify = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials('13806cf7187b4de487777fe679d594e8','c338bbe63d1345e98770e217ab055b61'))
+
+    def __init__(self, artista):
+        if artista not in type(self).__artistas:
+            raise ArtistaNoEncontrado(artista)
+        else:
+            self.__artista = artista
+            self.__id = type(self).__artistas[self.__artista]
+            self.__uri = f'spotify:artist:{self.__id}'
+
+    def albumes(self):
+        resultados = type(self).__spotify.artist_albums(self.__uri, album_type='album')
+        albumes = resultados['items']
+        while resultados['next']:
+            resultados = type(self).__spotify.next(resultados)
+            albumes.extend(resultados['items'])
+
+        for i, album in enumerate(albumes):
+            print(f"Album {i+1}: {album['name']}")
+            print(f"Link: {album['external_urls']['spotify']}\n")
+
+    def canciones_top(self):
+        resultados = type(self).__spotify.artist_top_tracks(self.__uri)
+
+        canciones = []
+        for cancion in resultados['tracks']:
+            canciones.append({'Track': cancion['name'], 'Link': cancion['external_urls']['spotify']})
+        return canciones
+
+cosmo = InformacionArtista('Cosmo Sheldrake')
+cosmo.albumes()
+print(cosmo.canciones_top())
