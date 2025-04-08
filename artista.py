@@ -1,6 +1,6 @@
 from staff import Staff
 from spotify_api import InformacionArtista
-from artista_no_encontrado_error import ArtistaNoEncontrado
+
 
 
 class Artista(Staff):
@@ -69,7 +69,7 @@ class Artista(Staff):
 
         """
         puesto_trabajo = 'Cantante'
-        apellido1 = None
+        apellido1 = ''
 
         super().__init__(fecha_nacimiento, dni, nombre, apellido1, sueldo, horario, puesto_trabajo, apellido2)
 
