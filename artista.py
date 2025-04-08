@@ -1,5 +1,6 @@
 from staff import Staff
-from typing import List
+from spotify_api import InformacionArtista
+from artista_no_encontrado_error import ArtistaNoEncontrado
 from cancion_no_encontrada_error import CancionNoEncontrada
 from cancion_ya_existe_error import CancionYaExiste
 
@@ -41,7 +42,7 @@ class Artista(Staff):
         Elimina una de las canciones de la lista de canciones populares del artista.
     """
 
-    def __init__(self, fecha_nacimiento: str, dni: str, nombre: str, apellido1: str,sueldo: float, horario: str, canciones_populares: List[str], apellido2: str = None) -> None:
+    def __init__(self, fecha_nacimiento: str, dni: str, nombre: str, sueldo: float, horario: str, apellido2: str = None) -> None:
         """
         Metodo constructor
 
@@ -67,8 +68,19 @@ class Artista(Staff):
             Lista con las canciones populares del artista
         """
         puesto_trabajo = type(self)
-        super().__init__(fecha_nacimiento, dni, nombre, apellido1, sueldo, horario, puesto_trabajo, apellido2)
-        self.__canciones_populares=canciones_populares
+        apellido1 = None
+        super().__init__(fecha_nacimiento, dni, nombre, sueldo, horario, puesto_trabajo, apellido1, apellido2)
+
+        try:
+            self.__informacion = InformacionArtista(nombre)
+        except ArtistaNoEncontrado:
+            print(f"El artista {nombre} no se encuentra en la base de datos. \nRevise ortografía y asegurese de colocar el nombre que aparece en Spotify en el parámetro 'nombre'")
+        else:
+            top10 = self.__informacion.canciones_top()
+            canciones_populares = []
+            for cancion in top10:
+                canciones_populares.append(cancion['Track'])
+            self.__canciones_populares=canciones_populares
 
 
     def anyadir_cancion(self, nueva_cancion: str) -> None :
@@ -99,3 +111,10 @@ class Artista(Staff):
             self.__canciones_populares.remove(cancion)
         else:
             raise CancionNoEncontrada(cancion, self._nombre)
+
+
+coso = Artista('a', 'b', 'Coso Sheldrake', 13.5, 'c')
+print('ERROR')
+
+cosmo = Artista('a', 'b', 'Cosmo Sheldrake', 13.5, 'c')
+print('\nTodo Cahchi')
