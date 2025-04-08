@@ -61,9 +61,9 @@ class Staff(Persona):
             objeto de tipo servicio en el que el empleado trabaja
         """
         super().__init__(fecha_nacimiento, dni, nombre, apellido1, apellido2)
-        self.__sueldo=sueldo
-        self.__horario=horario
-        self.__puesto_trabajo=puesto_trabajo
+        self._sueldo=sueldo
+        self._horario=horario
+        self._puesto_trabajo=puesto_trabajo
 
     def actualizar_sueldo(self, nuevo_sueldo: float) -> None :
         """
@@ -75,7 +75,7 @@ class Staff(Persona):
             Valor nuevo del sueldo del empleado
         """
         if type(nuevo_sueldo)==float:
-            self.__sueldo=nuevo_sueldo
+            self._sueldo=nuevo_sueldo
         else:
             print('Sueldo no válido, prueba con un número entero')
 
@@ -89,7 +89,7 @@ class Staff(Persona):
             Horario nuevo que recibirá el empleado
         """
         if type(nuevo_horario)==str:
-            self.__horario=nuevo_horario
+            self._horario=nuevo_horario
         else:
             print('Horario no válido')
 
@@ -102,4 +102,4 @@ class Staff(Persona):
         nuevo_puesto: str
             Puesto de trabajo nuevo que recibirá el empleado
         """
-        self.__puesto_trabajo=nuevo_puesto
+        self._puesto_trabajo=nuevo_puesto

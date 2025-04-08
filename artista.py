@@ -1,8 +1,7 @@
 from staff import Staff
 from spotify_api import InformacionArtista
 from artista_no_encontrado_error import ArtistaNoEncontrado
-from cancion_no_encontrada_error import CancionNoEncontrada
-from cancion_ya_existe_error import CancionYaExiste
+
 
 class Artista(Staff):
     """
@@ -26,20 +25,26 @@ class Artista(Staff):
         horario: str
             Horario en el que trabaja el arista
         puesto_trabajo: object
-            Puesto de trabajo del artista
-        canciones_populares: List[str]
-            Canciones más populares del artista
+            Puesto de trabajo del artista (en este caso será Cantante, esa es su ocupación)
+        canciones_populares: List[dict]
+            Canciones más populares del artista y links a estas
 
     Metodos:
     -------------
-    __init__(self, edad : int, nombre: str, dni: str, sueldo: float, horario: str ) -> None:
+    __init__(self, fecha_nacimiento: str, dni: str, nombre: str, sueldo: float, horario: str, apellido2: str = None) -> None:
         Constructor del objeto, llamará a la clase Staff para sus atributos comunes.
 
-    anyadir_cancion(self, nueva_cancion: str) -> None :
-        Añade una canción a la lista de canciones populares del artista.
+    mostrar_canciones_populares(self) -> None:
+        Metodo que muestra las canciones populares de un artista y sus links a spotify.
 
-    eliminar_cancion(self, cancion: str) -> None :
-        Elimina una de las canciones de la lista de canciones populares del artista.
+    mostrar_albumes(self) -> None:
+        Metodo que muestra los álbumes de un artista y sus links a spotify.
+
+    mostrar_link_artista(self):
+        Metodo que muestra el link que lleva a la página principal del artista en spotify.
+
+    __str__(self) -> str:
+        Metodo que muestra una cadena de texto con los principales datos de un artista.
     """
 
     def __init__(self, fecha_nacimiento: str, dni: str, nombre: str, sueldo: float, horario: str, apellido2: str = None) -> None:
@@ -54,67 +59,65 @@ class Artista(Staff):
             Dni del artista. Forma principal de identificación
         nombre: str
             Nombre del artista
-        apellido1: str
-            Primer apellido del artista
         apellido2: str
             Segundo apellido (si tiene) del artista. Si carece de él será None
         sueldo: float
             Sueldo por hora del artista
         horario: str
             Horario en el que trabaja el artista, debe ser hora_inicio-hora_fin, por ejemplo: 9:00-5:00
-        puesto_trabajo: object
-            Puesto de trabajo del artista es ser artista, por lo que tomará siempre el objeto Artista.
-        canciones_populares: List[str]
-            Lista con las canciones populares del artista
+
+
         """
-        puesto_trabajo = type(self)
+        puesto_trabajo = 'Cantante'
         apellido1 = None
-        super().__init__(fecha_nacimiento, dni, nombre, sueldo, horario, puesto_trabajo, apellido1, apellido2)
 
-        try:
-            self.__informacion = InformacionArtista(nombre)
-        except ArtistaNoEncontrado:
-            print(f"El artista {nombre} no se encuentra en la base de datos. \nRevise ortografía y asegurese de colocar el nombre que aparece en Spotify en el parámetro 'nombre'")
-        else:
-            top10 = self.__informacion.canciones_top()
-            canciones_populares = []
-            for cancion in top10:
-                canciones_populares.append(cancion['Track'])
-            self.__canciones_populares=canciones_populares
+        super().__init__(fecha_nacimiento, dni, nombre, apellido1, sueldo, horario, puesto_trabajo, apellido2)
 
+        self.__canciones_populares = InformacionArtista(self._nombre).canciones_top()
 
-    def anyadir_cancion(self, nueva_cancion: str) -> None :
+    def mostrar_canciones_populares(self) -> None:
         """
-        Añade una canción a la lista de canciones populares del artista si esta no pertenece a la lista
-
-        Parámetros:
-        --------------
-        nueva_cancion: str
-            Canción que se desea añadir a la lista de canciones populares
+        Méetodo que muestra todas las canciones populares de un artista y sus respectivos links
+        a spotify.
         """
-        if nueva_cancion not in self.__canciones_populares:
-            self.__canciones_populares.append(nueva_cancion)
-        else:
-            raise CancionYaExiste(nueva_cancion, self._nombre)
+        for cancion in self.__canciones_populares:
+            print(f'Canción: {cancion['Track']}, Link a la canción -> {cancion['Link']}')
 
-    def eliminar_cancion(self, cancion: str) -> None :
+    def mostrar_albumes(self) -> None:
         """
-        Elimina una de las canciones de la lista de canciones populares del artista solo si esta se encuentra en la lista,
-        si no está elevará un error.
-
-        Parámetros:
-        --------------
-        cancion: str
-            Canción que se desea eliminar de la lista de canciones populares
+        Metodo que obtiene los albumes de un artista mediante el uso de la API de spotify
+        y muestra sus álbumes y sus respectivos links a spotify
         """
-        if cancion in self.__canciones_populares:
-            self.__canciones_populares.remove(cancion)
-        else:
-            raise CancionNoEncontrada(cancion, self._nombre)
+        albumes = InformacionArtista(self._nombre).albumes()
+        for album in albumes:
+            print(f'Álbum: {album['Album']}, Link al álbum -> {album['Link']}')
+
+    def mostrar_link_artista(self):
+        """
+        Metodo que muestra por pantalla un link a la pagina de spotify del artista
+
+        """
+        link = InformacionArtista(self._nombre).link_artista()
+        print(f'Página principal del artista en spotify -> {link}')
+
+    def __str__(self) -> str:
+        """
+        Metodo que muestra los datos principales de un artista
+        ----------------------
+        :returns str
+            Devuelve una cadena d etexto con los datos principales del artista.
+        """
+        return f'{self._nombre} es un {self._puesto_trabajo}, \nCobra {self._sueldo}€ la hora, y su horario es {self._horario}.'
 
 
-coso = Artista('a', 'b', 'Coso Sheldrake', 13.5, 'c')
-print('ERROR')
 
-cosmo = Artista('a', 'b', 'Cosmo Sheldrake', 13.5, 'c')
-print('\nTodo Cahchi')
+# Ejemplo por si lo quereis probar a ejecutar
+a1 = Artista('10/10/2400', '12345678V', 'Cosmo Sheldrake', 1000, '5:00-9:00', )
+a1.mostrar_canciones_populares()
+print()
+a1.mostrar_albumes()
+print()
+a1.mostrar_link_artista()
+print()
+print(a1)
+

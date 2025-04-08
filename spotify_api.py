@@ -1,6 +1,7 @@
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 from artista_no_encontrado_error import ArtistaNoEncontrado
+from typing import List
 
 
 class InformacionArtista:
@@ -67,7 +68,7 @@ class InformacionArtista:
             self.__id = type(self).__artistas[self.__artista]
             self.__uri = f'spotify:artist:{self.__id}'
 
-    def albumes(self) -> list[dict]:
+    def albumes(self) -> List[dict]:
         """
         Metodo que obtiene los álbumes del artista
         """
