@@ -98,9 +98,9 @@ class Público(Persona):
         Parámetros:
         -----------
         servicio: Servicio
-            El servicio del que se quiere comprar el producto
+            Servicio del que se quiere comprar el producto
         producto: str
-            El nombre del producto a comprar
+            Nombre del producto a comprar
         '''
         if producto not in servicio.productos:
             return 'Producto no disponible'
