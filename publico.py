@@ -35,6 +35,9 @@ class Público(Persona):
 
     comprar_servicio(self, servicio: Servicio, producto: str) -> str:
         Permite comprar un producto de un servicio del festival
+
+    __str__(self)-> str
+        Devuelve una representación en cadena de texto del objeto
     '''
 
     def __init__(self, fecha_nacimiento: str, dni: str, nombre: str, apellido1: str, tipo_entrada: str, dinero_actual: float, apellido2: str = None) -> None:
@@ -113,3 +116,8 @@ class Público(Persona):
         else:
             return f"No dispone de saldo suficiente"
 
+    def __str__(self)-> str:
+        '''
+        Devuelve una representación en cadena de texto del objeto
+        '''
+        return f"Nombre: {self._nombre} \n Fecha de nacimiento: {self._Persona__fecha_nacimiento} \n DNI: {self._Persona__dni} \n Primer apellido: {self._Persona__apellido1}, segundo apellido: {self._Persona__apellido2} \n Tipo de entrada: {self.__tipo_entrada} \n Dinero disponible: {self.__dinero_actual}€"
