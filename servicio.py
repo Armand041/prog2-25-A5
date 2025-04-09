@@ -55,8 +55,8 @@ class Comida(Servicio):
         super().__init__(horario, alquiler, lugar, trabajadores)
 
     def obtener_informacion(self):
-        Menu_comida = {'Hamburguesa ': 12, 'Perrito caliente': 8, '1 porción de pizza grande': 5, 'Patatas fritas': 5, 'Churros': 7, 'Helado': 3, 'Fruta con chocolate': 6}
-        return f'Este puesto de comida ofrece: {Menu_comida}'
+        menu_comida = {'Hamburguesa ': 12, 'Perrito caliente': 8, '1 porción de pizza grande': 5, 'Patatas fritas': 5, 'Churros': 7, 'Helado': 3, 'Fruta con chocolate': 6}
+        return f'Este puesto de comida ofrece: {menu_comida}'
 
 
 class Bebida(Servicio):
@@ -84,14 +84,14 @@ class Merch(Servicio):
         merch = {'Camiseta': 25, 'Sudaderas': 40, 'Taza': 10, 'Pulsera': 5, 'Termo': 20}
         return f'Este puesto de merchandising ofrece: {merch}'
 
-class Sonido_Luces(Servicio):
+class SonidoLuces(Servicio):
     def __init__(self, horario: str, alquiler: float, lugar: str, trabajadores: list[str]):
         super().__init__(horario, alquiler, lugar, trabajadores)
 
     def obtener_informacion(self):
         return 'Este puesto no ofrece ningún prodcuto al público si no que consta de una serie de trabajadores que gestionan las luces y el sonido empleado en el festival controlandoq que todo funcione correctamente'
 
-class Entradas_Seguridad(Servicio):
+class EntradasSeguridad(Servicio):
     def __init__(self, horario: str, alquiler: float, lugar: str, trabajadores: list[str]):
         super().__init__(horario, alquiler, lugar, trabajadores)
 

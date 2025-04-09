@@ -31,9 +31,9 @@ class Festival:
 
 
     def __init__(self, nombre: str, fecha: str, lugar: str, aforo: int, coste: float, permisos: List[str]):
-        self.__nombre = nombre
-        self.__fecha = fecha
-        self.__lugar = lugar
+        self._nombre = nombre
+        self._fecha = fecha
+        self._lugar = lugar
         self.__aforo = aforo
         self.__coste = coste
         self.__permisos = permisos
@@ -80,18 +80,18 @@ class Festival:
         self.servicios.append(servicio)
 
     def __str__(self):
-        return (f'Nombre: {self.nombre}, Fecha: {self.fecha}, Lugar: {self.lugar}')
+        return f'Nombre: {self._nombre}, Fecha: {self._fecha}, Lugar: {self._lugar}'
 
     def mostrar_publico(self):
-        '''
+        """
         Muestra el público que asiste al festival
 
-        '''
+        """
         return f'Asistentes del Festival {self.__class__.__name__}: {self.asistentes}'
 
     def mostrar_servicios(self):
-        '''
+        """
         Muestra el público que asiste al festival
 
-        '''
+        """
         return f' Servicios del Festival {self.__class__.__name__}: {self.servicios}'
