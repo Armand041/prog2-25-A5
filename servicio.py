@@ -1,31 +1,32 @@
 from abc import ABC, abstractmethod
 
 """
-Clase Servicio: incluye todos los servicios que ofrece el festival
+Clase Servicio: incluye todos los servicios que ofrece el festival desde puestos de comida hasta puestos de merch
 
-Atributos:
-    horario: str
-         Horario de cada de puesto
-    Alquiler: float
-        Alquiler que paga cada puesto para estar en el festival
-    Lugar dentro del recinto: str
-        Ubicación de cada puesto en el festival
-    Trabajadores: list
-        Lista de los trabajadores de cada puesto
+Sus atributos son los que salen en el método del constructor      
 """
 
-
-# Si fuese una clase abtracta, podriamos hacer un metodo mas general sobre el servicio que ofrece cada puesto Y precio, horario??
-# Dejamos los metodos de despedir y contrtar sin ser abstractos
-
 class Servicio(ABC):
-    def __init__(self, horario: str, alquiler: float, lugar: str, trabajadores: list[str], productos: dict[str, float]):
+    def __init__(self, horario: str, alquiler: float, lugar: str, trabajadores: list[str]):
+        """
+        Metodo constructor
+
+        Parámetros:
+        -----------------
+         horario: str
+            Horario de cada de puesto
+        Alquiler: float
+            Alquiler que paga cada puesto para estar en el festival
+        Lugar dentro del recinto: str
+            Ubicación de cada puesto en el festival
+        Trabajadores: list
+            Lista de los trabajadores que trabajan en cada puesto
+        """
         self.horario = horario
         self.alquiler = alquiler
         self.lugar = lugar
         # TODO: Cuando juntemos la clase Staff, utilizarla aqui
         self.trabajadores = trabajadores
-        self.productos = productos
 
     def contratar_trabajador(self, trabajador):
         """
@@ -49,41 +50,52 @@ class Servicio(ABC):
         return f'Horario: {self.horario}, Alquiler: {self.alquiler}, Lugar: {self.lugar}, Trabajadores: {self.trabajadores}'
 
 
-class T_Comida(Servicio):
-    def __init__(self, horario: str, alquiler: float, lugar: str, trabajadores: list[str], productos: dict[str, float]):
-        super().__init__(horario, alquiler, lugar, trabajadores, productos)
-
-    # No se que queremos de cad clase pero hice este de ejemplo
-
-    def preparar_pedido(self, pedido):
-        precio = 0
-        for elemento in pedido:
-            if elemento in self.productos:
-                precio += self.productos[elemento]
-            else:
-                print('Ese producto no está a la venta')
-        return precio
-
-    # Si lo hiciese como una clase abstracta haría esto pero con el precio incluido, un diccionario objeto : precio
+class Comida(Servicio):
+    def __init__(self, horario: str, alquiler: float, lugar: str, trabajadores: list[str]):
+        super().__init__(horario, alquiler, lugar, trabajadores)
 
     def obtener_informacion(self):
-        return 'Es un puesto de comida que ofrece: Patatas, Bocadillos, Perritos'
+        Menu_comida = {'Hamburguesa ': 12, 'Perrito caliente': 8, '1 porción de pizza grande': 5, 'Patatas fritas': 5, 'Churros': 7, 'Helado': 3, 'Fruta con chocolate': 6}
+        return f'Este puesto de comida ofrece: {Menu_comida}'
 
 
-class T_Bebida(Servicio):
-    def __init__(self, horario: str, alquiler: float, lugar: str, trabajadores: list[str], productos: dict[str, float]):
-        super().__init__(horario, alquiler, lugar, trabajadores, productos)
+class Bebida(Servicio):
+    def __init__(self, horario: str, alquiler: float, lugar: str, trabajadores: list[str]):
+        super().__init__(horario, alquiler, lugar, trabajadores)
 
     def obtener_informacion(self):
-        return 'Es un puesto de bebidas que ofrece: Agua, Cerveza, Refrescos'
+        bebidas_sin_alcohol = {}
+        bebidas_con_alcohol = {}
+        return f'Este puesto de bebidas ofrece bebidas con alcohol: {bebidas_con_alcohol} y sin alcohol: {bebidas_sin_alcohol}'
 
-# class T_Tatto(Servicio):
+class Tatto(Servicio):
+    def __init__(self, horario: str, alquiler: float, lugar: str, trabajadores: list[str]):
+        super().__init__(horario, alquiler, lugar, trabajadores)
+
+    def obtener_informacion(self):
+        tatto = {'Pequeño': 50, 'Mediano': 120, 'Grande': 300, 'Muy grande': 750}
+        return f'Este puesto de tatuajes ofrece los siguientes precios dependiendo del tamaño: {tatto}'
+
+class Merch(Servicio):
+    def __init__(self, horario: str, alquiler: float, lugar: str, trabajadores: list[str]):
+        super().__init__(horario, alquiler, lugar, trabajadores)
+
+    def obtener_informacion(self):
+        merch = {'Camiseta': 25, 'Sudaderas': 40, 'Taza': 10, 'Pulsera': 5, 'Termo': 20}
+        return f'Este puesto de merchandising ofrece: {merch}'
+
+class Sonido_Luces(Servicio):
+    def __init__(self, horario: str, alquiler: float, lugar: str, trabajadores: list[str]):
+        super().__init__(horario, alquiler, lugar, trabajadores)
+
+    def obtener_informacion(self):
+        return 'Este puesto no ofrece ningún prodcuto al público si no que consta de una serie de trabajadores que gestionan las luces y el sonido empleado en el festival controlandoq que todo funcione correctamente'
+
+class Entradas_Seguridad(Servicio):
+    def __init__(self, horario: str, alquiler: float, lugar: str, trabajadores: list[str]):
+        super().__init__(horario, alquiler, lugar, trabajadores)
+
+    def obtener_informacion(self):
+        return 'Este puesto no ofrece ningún prodcuto al público si no que una serie de trabajadores se encargan de controlar las entradas del recinto'
 
 
-# class T_Merch(Servicio):
-
-
-# class T_Sonido(Servicio):
-
-
-# class T_Entradas_Seguridad(Servicio):
