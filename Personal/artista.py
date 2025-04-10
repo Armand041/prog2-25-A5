@@ -111,13 +111,4 @@ class Artista(Staff):
 
 
 
-# Ejemplo por si lo quereis probar a ejecutar
-a1 = Artista('10/10/2400', '12345678V', 'Cosmo Sheldrake', 1000, '5:00-9:00', )
-a1.mostrar_canciones_populares()
-print()
-a1.mostrar_albumes()
-print()
-a1.mostrar_link_artista()
-print()
-print(a1)
 
