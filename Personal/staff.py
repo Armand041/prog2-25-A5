@@ -37,7 +37,7 @@ class Staff(Persona):
         Reemplaza el horario del trabajador por nuevo_horario.
     """
 
-    def __init__(self, fecha_nacimiento : str, dni: str, nombre: str, apellido1: str, sueldo: float, horario: str, puesto_trabajo: str, apellido2: str = None ) -> None :
+    def __init__(self, fecha_nacimiento : str, dni: str, nombre: str, apellido1: str, sueldo: float, horario: str, puesto_trabajo: object, apellido2: str = None ) -> None :
         """
         Metodo constructor
 
@@ -57,13 +57,13 @@ class Staff(Persona):
             Sueldo por hora del trabajador
         horario: str
             Horario en el que trabaja el empleado, debe ser hora_inicio-hora_fin, por ejemplo: 9:00-5:00
-        puesto_trabajo: str
-            Nombre del servicio en el que el empleado trabaja
+        puesto_trabajo: object
+            objeto de tipo servicio en el que el empleado trabaja
         """
         super().__init__(fecha_nacimiento, dni, nombre, apellido1, apellido2)
-        self.__sueldo=sueldo
-        self.__horario=horario
-        self.__puesto_trabajo=puesto_trabajo
+        self._sueldo=sueldo
+        self._horario=horario
+        self._puesto_trabajo=puesto_trabajo
 
     def actualizar_sueldo(self, nuevo_sueldo: float) -> None :
         """
@@ -75,7 +75,7 @@ class Staff(Persona):
             Valor nuevo del sueldo del empleado
         """
         if type(nuevo_sueldo)==float:
-            self.__sueldo=nuevo_sueldo
+            self._sueldo=nuevo_sueldo
         else:
             print('Sueldo no válido, prueba con un número entero')
 
@@ -89,11 +89,11 @@ class Staff(Persona):
             Horario nuevo que recibirá el empleado
         """
         if type(nuevo_horario)==str:
-            self.__horario=nuevo_horario
+            self._horario=nuevo_horario
         else:
             print('Horario no válido')
 
-    def cambiar_puesto(self, nuevo_puesto: str) -> None :
+    def cambiar_puesto(self, nuevo_puesto: object) -> None :
         """
         Metodo que reemplaza el puesto de trabajo de un trabajador
 
@@ -102,4 +102,4 @@ class Staff(Persona):
         nuevo_puesto: str
             Puesto de trabajo nuevo que recibirá el empleado
         """
-        self.__puesto_trabajo=nuevo_puestos
+        self._puesto_trabajo=nuevo_puesto
