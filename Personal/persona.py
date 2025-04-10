@@ -47,5 +47,9 @@ class Persona:
         self.__dni = dni
 
     @property
+    def nombre(self):
+        return self._nombre
+
+    @property
     def dni(self):
         return self.__dni

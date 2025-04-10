@@ -23,10 +23,33 @@ def seleccionar_festival():
     while opc_festival not in opciones_validas:
         for i, festival in enumerate(festivales):
             print(f"{i + 1}. {festival.nombre}")
-            opc_festival = input('Selecciona un festival (por número): ')
+        opc_festival = input('Selecciona un festival (por número): ')
 
     return festivales[int(opc_festival) - 1]
 
+
+def seleccionar_servicio_de_festival(festival):
+    opc_servicio = ''
+    opciones_validas = [str(i + 1) for i in range(len(festival.servicios))]
+
+    while opc_servicio not in opciones_validas:
+        for i, servicio in enumerate(festival.servicios):
+            print(f"{i + 1}. {servicio.nombre}")
+        opc_servicio = input('Selecciona un servicio (por número): ')
+
+    return festival.servicios[int(opc_servicio) - 1]
+
+
+def seleccionar_trabajador_de_servicio(servicio):
+    opc_trabajador = ''
+    opciones_validas = [str(i + 1) for i in range(len(servicio.trabajadores))]
+
+    while opc_trabajador not in opciones_validas:
+        for i, trabajador in enumerate(servicio.trabajadores):
+            print(f"{i + 1}. {trabajador.nombre} ({trabajador.dni})")
+        opc_trabajador = input('Selecciona un trabajador (por número): ')
+
+    return servicio.trabajadores[int(opc_trabajador) - 1]
 
 while True:
     opcion = ''
@@ -54,22 +77,16 @@ while True:
         fecha_fest = input('Introduce la fecha del festival a crear: ')
         lugar_fest = input('Introduce el lugar del festival: ')
         aforo_fest = input('Introduce el aforo del festival a crear: ')
-        if aforo_fest.isdigit():
+        if not aforo_fest.isdigit():
             print('Por favor, introduzca un número entero')
-            aforo_fest = input('\nIntroduce el aforo del festival a crear: ')
+            aforo_fest = int(input('\nIntroduce el aforo del festival a crear: '))
         coste_fest = ''
-        permisos_fest = []
         while type(coste_fest) != float:
             try:
                 coste_fest = float(input('Introduce el coste del festival (en €): '))
             except TypeError:
-                print('Por favor, introduzca un núsmero')
-        while True:
-            permiso = input('Introduce un permiso para el festival (no escribas nada para terminar): ')
-            if permiso == '':
-                break
-            permisos.append(permiso)
-        festival_nuevo = Festival(nombre_fest, fecha_fest, lugar_fest, aforo_fest, coste_fest, permisos_fest)
+                print('Por favor, introduzca un número')
+        festival_nuevo = Festival(nombre_fest, fecha_fest, lugar_fest, aforo_fest, coste_fest)
         festivales.append(festival_nuevo)
         print('Nuevo festival creado')
 
@@ -134,12 +151,36 @@ while True:
                     entradasSeguridad1 = EntradasSeguridad(nombre, horario, alquiler, lugar, [])
                     festival.anyadir_servicio(entradasSeguridad1)
 
-            if opcion_servicio == '3':
+            elif opcion_servicio == '2':
+                servicio_a_eliminar = seleccionar_servicio_de_festival(festival)
+                for servicio in festival.servicios:
+                    if servicio.nombre == servicio_a_eliminar.nombre:
+                        festival.servicios.remove(servicio_a_eliminar)
+                        print(f"El servicio {servicio_a_eliminar.nombre} se ha eliminado.")
+
+            elif opcion_servicio == '3':
+                servicio_introducir_trabjador = seleccionar_servicio_de_festival(festival)
+
                 fecha_nacimiento = input('Introduce tu fecha de nacimiento: ')
                 dni = input('Introduce tu dni: ')
                 nombre = input('Introduce tu nombre: ')
                 apellido1 = input('Introduce tu primer apellido: ')
                 apellido2 = input('Introduce tu segundo apellido: ')
+                sueldo = float(input('Introduce el sueldo: '))
+
+                trabajador = Staff(fecha_nacimiento, dni, nombre, apellido1, sueldo, servicio_introducir_trabjador.horario, '' , apellido2)
+                servicio_introducir_trabjador.contratar_trabajador(trabajador)
+
+            elif opcion_servicio == '4':
+                servicio_eliminar_trabjador = seleccionar_servicio_de_festival(festival)
+                trabajador_a_eliminar = seleccionar_trabajador_de_servicio(servicio_eliminar_trabjador)
+
+                for trabajador in servicio_eliminar_trabjador.trabajadores:
+                    if trabajador.dni == trabajador_a_eliminar.dni:
+                        servicio_eliminar_trabjador.trabajadores.remove(trabajador_a_eliminar)
+                        print(f"El trabajador {trabajador_a_eliminar.nombre} ({trabajador_a_eliminar.dni}) se ha eliminado.")
+
+
 
 
 
