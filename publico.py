@@ -1,7 +1,7 @@
 from persona import Persona
 from servicio import Servicio
 
-class Público(Persona):
+class Publico(Persona):
     '''
     Clase usada para representar al público que asistirá a cada festival
 
