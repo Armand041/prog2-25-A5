@@ -1,5 +1,9 @@
 from abc import ABC, abstractmethod
 
+from Personal.staff import Staff
+#from Personal.staff import Staf
+
+
 """
 Clase Servicio: incluye todos los servicios que ofrece el festival desde puestos de comida hasta puestos de merch
 
@@ -7,12 +11,14 @@ Sus atributos son los que salen en el método del constructor
 """
 
 class Servicio(ABC):
-    def __init__(self, horario: str, alquiler: float, lugar: str, trabajadores: list[str]):
+    def __init__(self, nombre: str, horario: str, alquiler: float, lugar: str, trabajadores: list[Staff]):
         """
         Metodo constructor
 
         Parámetros:
         -----------------
+        nombre: str
+            Es el nombre del puesto en el que trabaja cada lista de staff
          horario: str
             Horario de cada de puesto
         Alquiler: float
@@ -20,8 +26,9 @@ class Servicio(ABC):
         Lugar dentro del recinto: str
             Ubicación de cada puesto en el festival
         Trabajadores: list
-            Lista de los trabajadores que trabajan en cada puesto
+            Lista de staff que nos dice los trabajadores que trabajan en cada puesto con sus datos
         """
+        self.nombre = nombre
         self.horario = horario
         self.alquiler = alquiler
         self.lugar = lugar
@@ -32,15 +39,25 @@ class Servicio(ABC):
         """
         Método que añade trabajadores a la lista Trabjadores si queremos contratar a alguien
         """
+        trabajador.cambiar_puesto(self.nombre)
+
         self.trabajadores.append(trabajador)
 
     def despedir_trabajadores(self, trabajador):
         """
         Método que elimina los trabajadrores de la lista Trabajadores en el caso en el que queramos despedir a alguien
         """
-        if trabajador in self.trabajadores:
-            self.trabajadores.remove(trabajador)
-        return self.trabajadores
+        for trabajador in self.trabajadores:
+            if trabajador.dni == dni_trabajador:
+                trabajador.cambiar_puesto("")  # Se vacía el puesto de trabajo
+                self.trabajadores.remove(trabajador)  # Elimina al trabajador de la lista
+                print(f"El trabajador con DNI {dni_trabajador} ha sido despedido y su puesto ha sido eliminado.")
+                return  # Terminamos la función después de despedir al trabajador
+
+            # Si no se encuentra el trabajador con ese DNI
+        print(f"No se encontró al trabajador con el DNI {dni_trabajador}.")
+
+
 
     @abstractmethod
     def obtener_informacion(self):
@@ -99,3 +116,5 @@ class Entradas_Seguridad(Servicio):
         return 'Este puesto no ofrece ningún prodcuto al público si no que una serie de trabajadores se encargan de controlar las entradas del recinto'
 
 
+pepe = Staff('03-03-2000', '334535', )
+servicio1 = Comida('horario', 4,5, 'lugar', )

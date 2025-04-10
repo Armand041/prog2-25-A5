@@ -37,7 +37,7 @@ class Staff(Persona):
         Reemplaza el horario del trabajador por nuevo_horario.
     """
 
-    def __init__(self, fecha_nacimiento : str, dni: str, nombre: str, apellido1: str, sueldo: float, horario: str, puesto_trabajo: object, apellido2: str = None ) -> None :
+    def __init__(self, fecha_nacimiento : str, dni: str, nombre: str, apellido1: str, sueldo: float, horario: str, puesto_trabajo: str, apellido2: str = None ) -> None :
         """
         Metodo constructor
 
@@ -57,8 +57,8 @@ class Staff(Persona):
             Sueldo por hora del trabajador
         horario: str
             Horario en el que trabaja el empleado, debe ser hora_inicio-hora_fin, por ejemplo: 9:00-5:00
-        puesto_trabajo: object
-            objeto de tipo servicio en el que el empleado trabaja
+        puesto_trabajo: str
+            Nombre del servicio en el que el empleado trabaja
         """
         super().__init__(fecha_nacimiento, dni, nombre, apellido1, apellido2)
         self.__sueldo=sueldo
@@ -93,7 +93,7 @@ class Staff(Persona):
         else:
             print('Horario no válido')
 
-    def cambiar_puesto(self, nuevo_puesto: object) -> None :
+    def cambiar_puesto(self, nuevo_puesto: str) -> None :
         """
         Metodo que reemplaza el puesto de trabajo de un trabajador
 
@@ -102,4 +102,4 @@ class Staff(Persona):
         nuevo_puesto: str
             Puesto de trabajo nuevo que recibirá el empleado
         """
-        self.__puesto_trabajo=nuevo_puesto
+        self.__puesto_trabajo=nuevo_puestos
