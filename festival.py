@@ -83,3 +83,7 @@ class Festival:
 
         """
         return f' Servicios del Festival {self.__class__.__name__}: {self.servicios}'
+
+    @property
+    def nombre(self):
+        return self._nombre

@@ -1,4 +1,4 @@
-from persona import Persona
+from Personal.persona import Persona
 from servicio import Servicio
 
 class Publico(Persona):

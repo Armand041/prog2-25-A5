@@ -1,4 +1,4 @@
-from staff import Staff
+from Personal.staff import Staff
 from spotify_api import InformacionArtista
 
 
