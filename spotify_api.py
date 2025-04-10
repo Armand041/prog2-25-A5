@@ -1,5 +1,3 @@
-import csv
-
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 from artista_no_encontrado_error import ArtistaNoEncontrado
@@ -17,7 +15,7 @@ class InformacionArtista:
     Clase:
         artistas: dict
             Base de datos donde se guardarán los ID de spotify de cada artista siendo el nombre de este
-            (usando el que aparece en spotify) como clave. Los datos son extraidos del csv artistas_disponibles
+            (usando el que aparece en spotify) como clave.
         spotify: object
             Objeto que conecta, via credenciales propias, con spotify para recuperar información
     Instancia:
@@ -39,12 +37,9 @@ class InformacionArtista:
         link_artista(self) -> str
             Devolverá el link a la página de spotify del artista
     """
-    __artistas = {}
-    with open('artistas_disponibles.csv', 'r') as csv_file:
-        reader = csv.DictReader(csv_file)
-        for row in reader:
-            __artistas[row['nombre']] = row['link']
-            
+
+    ##### HAY QUE HACER QUE EL DICCIONARIO SE CREE A PARTIR DE UN CSV #####
+    __artistas = {'Cosmo Sheldrake': '6hV6oxGLeLFw17DGjIPkYD'}
     __spotify = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials('13806cf7187b4de487777fe679d594e8','c338bbe63d1345e98770e217ab055b61'))
 
     def __init__(self, artista: str) -> None:
@@ -66,10 +61,10 @@ class InformacionArtista:
             String general que sumado a la id del artista nos permitirá acceder al contenido
             de ese artista.
         """
-        if artista.lower() not in type(self).__artistas:
+        if artista not in type(self).__artistas:
             raise ArtistaNoEncontrado(artista)
         else:
-            self.__artista = artista.lower()
+            self.__artista = artista
             self.__id = type(self).__artistas[self.__artista]
             self.__uri = f'spotify:artist:{self.__id}'
 

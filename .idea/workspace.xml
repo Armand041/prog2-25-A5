@@ -5,9 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="604e9924-bf7c-4b17-a5e8-a6142f75fd5c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/almacenamiento_artista.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spotify_api.py" beforeDir="false" afterPath="$PROJECT_DIR$/spotify_api.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/festival.py" beforeDir="false" afterPath="$PROJECT_DIR$/festival.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/servicio.py" beforeDir="false" afterPath="$PROJECT_DIR$/servicio.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,12 +40,11 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Python.almacenamiento_artista.executor": "Run",
     "Python.artista.executor": "Run",
     "Python.spotify_api.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "Almacenamiento__Artistas",
+    "git-widget-placeholder": "develop",
     "last_opened_file_path": "/home/raul-ucles/entorno_prog2/bin/python3.12",
     "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
@@ -59,6 +59,7 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.12 (Prac_5)" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Personal" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
