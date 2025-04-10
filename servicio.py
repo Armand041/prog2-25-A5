@@ -79,8 +79,8 @@ class Bebida(Servicio):
         super().__init__(nombre, horario, alquiler, lugar, trabajadores)
 
     def obtener_informacion(self):
-        bebidas_sin_alcohol = {}
-        bebidas_con_alcohol = {}
+        bebidas_sin_alcohol = {'Fanta Naranja': 2.5, 'Fanta limon': 2,5, 'Cocacola': 2.7, 'Agua': 3}
+        bebidas_con_alcohol = {'Mojito': 8, 'Cubata': 10, 'Tinto': 5, 'Cerveza': 4}
         return f'Este puesto de bebidas ofrece bebidas con alcohol: {bebidas_con_alcohol} y sin alcohol: {bebidas_sin_alcohol}'
 
 class Tattoo(Servicio):
