@@ -138,7 +138,7 @@ def eliminar_festival():
         return f'El festival {festival} fue eliminado correctamente', 200
 
 #Notar que devuelve una lista
-@app.route('\data_nombres', methods=['GET'])
+@app.route('/data_nombres', methods=['GET'])
 def mostrar_festivales():
     nombres_festi=[]
     contador=0
@@ -203,7 +203,7 @@ def anyadir_servicio():
         writer.writerows(datos_servicios)
         return f'Datos añadidos en el festival {nombre_festi} y en el fichero de servicios', 200
 
-@app.route('\data_nombres\servicios', methods=['GET'])
+@app.route('/data_nombres/servicios', methods=['GET'])
 def mostrar_servicios():
     nombres_servi=[]
     contador=0
@@ -218,6 +218,43 @@ def mostrar_servicios():
     except FileNotFoundError:
         return 'No encontrado el archivo con los festivales', 404
     return nombres_servi, 200
+
+@app.route('/data/trabajadores', methods=['GET'])
+def mostrar_trabajadores():
+    nombres_trabajadores=[]
+    dni_trabajadores=[]
+    contador=0
+    try:
+        with open('staff.csv', 'r') as info:
+            reader = csv.reader(info, delimiter=',')
+            for row in reader:
+                if contador==0:
+                    contador+=1
+                else:
+                    nombres_trabajadores.append(row[2])
+                    dni_trabajadores.append(row[1])
+    except FileNotFoundError:
+        return 'No encontrado el archivo con los festivales', 404
+    return f'Trabajan las personas: {nombres_trabajadores} con dni: {dni_trabajadores} ', 200
+@app.route('/data/publico', methods=['GET'])
+def mostrar_publico():
+    nombres_publico=[]
+    dni_publico=[]
+    contador=0
+    try:
+        with open('publico.csv.csv', 'r') as info:
+            reader = csv.reader(info, delimiter=',')
+            for row in reader:
+                if contador==0:
+                    contador+=1
+                else:
+                    nombres_publico.append(row[2])
+                    dni_publico.append(row[1])
+    except FileNotFoundError:
+        return 'No encontrado el archivo con los festivales', 404
+    return f'Son publico las personas: {nombres_publico} con dni: {dni_publico} ', 200
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
