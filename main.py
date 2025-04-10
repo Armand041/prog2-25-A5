@@ -91,7 +91,14 @@ while True:
         print('Nuevo festival creado')
 
     elif opcion == '2':
-        pass
+        if not festivales:
+            print('No hay festivales disponibles para eliminar')
+        else:
+            print('Elige un festival para eliminar')
+            festival_a_eliminar = seleccionar_festival()
+            festivales.remove(festival_a_eliminar)
+            print('Festival eliminado correctamente')
+
     elif opcion == '3':
         if len(festivales) == 0:
             print('No hay festivales disponibles')
@@ -185,7 +192,30 @@ while True:
 
 
     elif opcion == '4':
-        pass
+        if len(festivales) == 0:
+            print('No hay festivales disponibles para añadir asistentes')
+        else:
+            print('Selecciona un festival para añadir al asistente:')
+            festival = seleccionar_festival()
+
+            print('\nCrear nuevo usuario:')
+            nombre = input('Nombre: ')
+            apellido1 = input('Primer apellido: ')
+            fecha_nacimiento = input('Fecha de nacimiento (dd/mm/aaaa): ')
+            dni = input('DNI: ')
+            tipo_entrada = input('Tipo de entrada (General/VIP/...): ')
+            dinero_actual = ''
+            while True:
+                try:
+                    dinero_actual = float(input('Dinero disponible (€): '))
+                    break
+                except ValueError:
+                    print('Por favor, introduce un número válido para el dinero (float)')
+
+            nuevo_usuario = Publico(fecha_nacimiento, dni, nombre, apellido1, tipo_entrada, dinero_actual)
+
+            festival.anyadir_persona(nuevo_usuario)
+            print('Nuevo asistente añadido al festival')
     elif opcion == '5':
         pass
     elif opcion == '6':
