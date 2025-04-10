@@ -53,3 +53,6 @@ class Persona:
     @property
     def dni(self):
         return self.__dni
+
+    def __str__(self):
+        return f'Nombre: {self.nombre}, Primer apellido: {self.__apellido1}, Segundo apellido: {self.__apellido2} , DNI: {self.dni}, Fecha nacimiento: {self.__fecha_nacimiento}'

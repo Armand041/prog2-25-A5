@@ -68,7 +68,11 @@ class Festival:
         self.servicios.append(servicio)
 
     def __str__(self):
-        return f'Nombre: {self._nombre}, Fecha: {self._fecha}, Lugar: {self._lugar}'
+        informacion = f'Nombre: {self._nombre}, Fecha: {self._fecha}, Lugar: {self._lugar}, Servicios: '
+        for servicio in self.servicios:
+            informacion += f'{servicio}\n'
+
+        return informacion
 
     def mostrar_publico(self):
         """

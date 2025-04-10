@@ -189,13 +189,20 @@ while True:
     elif opcion == '5':
         pass
     elif opcion == '6':
-        pass
+        for festival in festivales:
+            print(f"{festival}\n")
     elif opcion == '7':
-        pass
+        festival = seleccionar_festival()
+        print(festival)
     elif opcion == '8':
-        pass
+        festival = seleccionar_festival()
+        servicio = seleccionar_servicio_de_festival(festival)
+        print(servicio)
     elif opcion == '9':
-        pass
+        festival = seleccionar_festival()
+        servicio = seleccionar_servicio_de_festival(festival)
+        trabajador = seleccionar_trabajador_de_servicio(servicio)
+        print(trabajador)
     elif opcion == '10':
         pass
     elif opcion == '11':

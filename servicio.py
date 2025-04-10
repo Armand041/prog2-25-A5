@@ -62,7 +62,11 @@ class Servicio(ABC):
         pass
 
     def __str__(self):
-        return f'Horario: {self.horario}, Alquiler: {self.alquiler}, Lugar: {self.lugar}, Trabajadores: {self.trabajadores}'
+        informacion = f'Horario: {self.horario}, Alquiler: {self.alquiler}, Lugar: {self.lugar}, Trabajadores: '
+        for trabajador in self.trabajadores:
+            informacion += f'{trabajador}\n'
+
+        return informacion
 
 
 class Comida(Servicio):

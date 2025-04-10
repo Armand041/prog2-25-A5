@@ -103,3 +103,6 @@ class Staff(Persona):
             Puesto de trabajo nuevo que recibirá el empleado
         """
         self._puesto_trabajo=nuevo_puesto
+
+    def __str__(self):
+        return f'{super().__str__()}, Trabaja en: {self._puesto_trabajo}, Sueldo: {self._sueldo}, Horario del servicio: {self._horario}'
