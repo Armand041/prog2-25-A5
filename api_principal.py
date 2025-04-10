@@ -204,7 +204,7 @@ def anyadir_servicio():
         return f'Datos añadidos en el festival {nombre_festi} y en el fichero de servicios', 200
 
 @app.route('\data_nombres\servicios', methods=['GET'])
-def mostrar_festivales():
+def mostrar_servicios():
     nombres_servi=[]
     contador=0
     try:
