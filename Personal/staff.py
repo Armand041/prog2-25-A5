@@ -37,7 +37,7 @@ class Staff(Persona):
         Reemplaza el horario del trabajador por nuevo_horario.
     """
 
-    def __init__(self, fecha_nacimiento : str, dni: str, nombre: str, apellido1: str, sueldo: float, horario: str, puesto_trabajo: object, apellido2: str = None ) -> None :
+    def __init__(self, fecha_nacimiento : str, dni: str, nombre: str, apellido1: str, sueldo: float, horario: str, puesto_trabajo: str, apellido2: str = None ) -> None :
         """
         Metodo constructor
 
@@ -93,7 +93,7 @@ class Staff(Persona):
         else:
             print('Horario no válido')
 
-    def cambiar_puesto(self, nuevo_puesto: object) -> None :
+    def cambiar_puesto(self, nuevo_puesto: str) -> None :
         """
         Metodo que reemplaza el puesto de trabajo de un trabajador
 
