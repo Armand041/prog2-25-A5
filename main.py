@@ -13,6 +13,8 @@ from Personal.artista import Artista
 from Personal.persona import Persona
 from Personal.staff import Staff
 
+festivales = []
+
 while True:
     opcion = ''
     opciones = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
@@ -37,6 +39,7 @@ while True:
     if opcion == '1':
         nombre_fest = input('Introduce el nombre del festival a crear: ')
         fecha_fest = input('Introduce la fecha del festival a crear: ')
+        lugar_fest = input('Introduce el lugar del festival: ')
         aforo_fest = input('Introduce el aforo del festival a crear: ')
         if aforo_fest.isdigit():
             print('Por favor, introduzca un número entero')
@@ -47,8 +50,15 @@ while True:
                 coste_fest = float(input('Introduce el coste del festival (en €): '))
             except TypeError:
                 print('Por favor, introduzca un número')
-        # el resto
-
+        permisos_fest = []
+        while True:
+            permiso = input('Introduce un permiso para el festival (no escribas nada para terminar): ')
+            if permiso == '':
+                break
+            permisos.append(permiso)
+        festival_nuevo = Festival(nombre_fest, fecha_fest, lugar_fest, aforo_fest, coste_fest, permisos_fest)
+        festivales.append(festival_nuevo)
+        print('Nuevo festival creado')
 
     elif opcion == '2':
         pass
