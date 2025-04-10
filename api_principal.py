@@ -2,11 +2,12 @@ from flask import Flask, request
 from flask_jwt_extended import (JWTManager, create_access_token, jwt_required, get_jwt_identity, get_jwt)
 import hashlib
 from festival import Festival
-from publico import Público
+from publico import Publico
 from Personal.artista import Artista
 from Personal.persona import Persona
 from Personal.staff import Staff
 import csv
+import ast # para pasar str de listas a lista y manejarlo
 
 app = Flask(__name__)
 app.config['JWT_SECRET_KEY']='$ecret0 dE_verdAd*'
@@ -90,6 +91,7 @@ def get_datos_festival():
 
 # se pasan todos los datos por la url
 @app.route('/data', methods=['POST'])
+@jwt_required()
 def crear_festival():
     datos=[]
     nombre = request.args.get('nombre', '')
@@ -113,6 +115,7 @@ def crear_festival():
         return f'Festival {nombre} añadido correctamente', 200
 
 @app.route('/data', methods=['DELETE'])
+@jwt_required()
 def eliminar_festival():
     datos_nuevos=[]
     festi_found=False
@@ -159,9 +162,62 @@ def datos_artista():
     # en main llamamos a las funciones de mostrar los datos, 'datos' es un objeto de la clase artista
     return datos, 200
 
+@app.route('/data/servicio', methods=['POST'])
+@jwt_required()
+def anyadir_servicio():
+    datos_festi=[]
+    datos_servicios=[]
+    nombre_festi = request.args.get('festival', '')
+    nombre_servicio =request.args.get('servicio', '')
+    lugar = request.args.get('lugar', '')
+    horario = request.args.get('horario', '')
+    alquiler = request.args.get('alquiler', '')
+    trabajadores = request.args.get('trabajadores', '')
+    festi_found=False
+    try:
+        with open('informacion_festivales.csv', 'r') as info:
+            reader = csv.reader(info, delimiter=',')
+            for festival in reader:
+                if nombre_festi == festival[0]:
+                    servicios= ast.literal_eval(festival[7])
+                    if nombre_servicio not in servicios:
+                        servicios.append(nombre_servicio)
+                    festival[7] = str(servicios)
+                datos_festi.append(festival)
 
+        if not festi_found:
+            return f'El festival {nombre_festi} no se ha encontrado', 404
+    except FileNotFoundError:
+        return 'No existe el documento con los festivales', 404
 
+    with open('informacion_festivales.csv', 'w') as info:
+        writer = csv.writer(info, delimiter=',')
+        writer.writerows(datos_festi)
+    with open('Servicios.csv','r') as servi:
+        reader=csv.reader(servi, delimiter=',')
+        for row in reader:
+            datos_servicios.append(row)
+    with open('Servicios.csv','w') as servi:
+        writer= csv.writer(servi, delimiter=',')
+        datos_servicios.append([nombre_servicio,horario,alquiler,lugar,trabajadores,nombre_festi])
+        writer.writerows(datos_servicios)
+        return f'Datos añadidos en el festival {nombre_festi} y en el fichero de servicios', 200
 
+@app.route('\data_nombres\servicios', methods=['GET'])
+def mostrar_festivales():
+    nombres_servi=[]
+    contador=0
+    try:
+        with open('Servicios.csv', 'r') as info:
+            reader = csv.reader(info, delimiter=',')
+            for row in reader:
+                if contador==0:
+                    contador+=1
+                else:
+                    nombres_servi.append(row[0])
+    except FileNotFoundError:
+        return 'No encontrado el archivo con los festivales', 404
+    return nombres_servi, 200
 
 if __name__ == '__main__':
     app.run(debug=True)
