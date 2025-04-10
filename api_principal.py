@@ -31,7 +31,7 @@ def signup():
             user_writer = csv.writer(writer, delimiter=',')
             user_writer.writerows(datos)
             writer.close()
-            return f'Ususario {user} añadido correctamente', 200
+            return f'Ususario {new_user} añadido correctamente', 200
     except FileNotFoundError:
         return 'No existe el documento usuarios.csv', 404
 
@@ -73,4 +73,95 @@ def signout():
     with open('usuarios.csv', 'w') as usuarios:
         writer= csv.writer(usuarios, delimiter=',')
         writer.writerows(datos_nuevos)
-        return f'El usuarios {user} fue eliminado correctamente', 200
+        return f'El usuario {user} fue eliminado correctamente', 200
+
+@app.route('/data', mwthods=['GET'])
+def get_datos_festival():
+    festival = request.args.get('festival', '')
+    try:
+        with open('informacion_festivales.csv', 'r') as festivales:
+            reader= csv.reader(festivales, delimiter=',')
+            for row in reader:
+                if festival==row[0]:
+                    return f'El festival {row[0]} se celebrará en la fecha {row[1]} en {row[2]}. \nEl aforo total es {row[3]}, solo quedan {row[5]} huecos. Costará {row[4]}€ en total. Sus servicios son: {row[7]}', 200
+            return f'El festival {festival} no fue encontrado', 404
+    except FileNotFoundError:
+        return 'No encontrado el archivo con los festivales', 404
+
+# se pasan todos los datos por la url
+@app.route('/data', methods=['POST'])
+def crear_festival():
+    datos=[]
+    nombre = request.args.get('nombre', '')
+    fecha = request.args.get('fecha', '')
+    lugar = request.args.get('lugar', '')
+    aforo = request.args.get('aforo', '')
+    coste = request.args.get('coste', '')
+    try:
+        with open('informacion_festivales.csv', 'r') as info:
+            reader = csv.reader(info, delimiter=',')
+            for festival in reader:
+                datos.append(festival)
+                if nombre == festival[0]:
+                    return f'El festival {nombre} ya existe', 409
+    except FileNotFoundError:
+        return 'No existe el documento con los festivales', 404
+    datos.append([nombre,fecha,lugar,aforo,coste,aforo,[],[]])
+    with open('informacion_festivales.csv', 'r') as info:
+        writer = csv.writer(info, delimiter=',')
+        writer.writerows(datos)
+        return f'Festival {nombre} añadido correctamente', 200
+
+@app.route('/data', methods=['DELETE'])
+def eliminar_festival():
+    datos_nuevos=[]
+    festi_found=False
+    festival = request.args.get('festival', '')
+    try:
+        with open('informacion_festivales.csv', 'r') as info:
+            reader = csv.reader(info, delimiter=',')
+            for row in reader:
+                if festival == row[0]:
+                    festi_found=True
+                else:
+                    datos_nuevos.append(row)
+        if not festi_found:
+            return f'El festival {festival} no fue encontrado.', 404
+    except FileNotFoundError:
+        return 'No encontrado el archivo con los festivales', 404
+    with open('informacion_festivales.csv', 'w') as info:
+        writer= csv.writer(info, delimiter=',')
+        writer.writerows(datos_nuevos)
+        return f'El festival {festival} fue eliminado correctamente', 200
+
+#Notar que devuelve una lista
+@app.route('\data_nombres', methods=['GET'])
+def mostrar_festivales():
+    nombres_festi=[]
+    contador=0
+    try:
+        with open('informacion_festivales.csv', 'r') as info:
+            reader = csv.reader(info, delimiter=',')
+            for row in reader:
+                if contador==0:
+                    contador+=1
+                else:
+                    nombres_festi.append(row[0])
+    except FileNotFoundError:
+        return 'No encontrado el archivo con los festivales', 404
+    return nombres_festi, 200
+
+
+@app.route('/data/artistas', methods=['GET'])
+def datos_artista():
+    artista = request.args.get('artista', '')
+    datos=Artista('','',artista,0,'')
+    # en main llamamos a las funciones de mostrar los datos, 'datos' es un objeto de la clase artista
+    return datos, 200
+
+
+
+
+
+if __name__ == '__main__':
+    app.run(debug=True)

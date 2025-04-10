@@ -11,7 +11,6 @@ fecha: Fecha de realización del festival
 lugar: Lugar donde transcurre el festival
 aforo: Aforo máximo permitido
 coste: Coste total del festival
-permisos: Lista de los permisos legales que tiene el festival
 aforo_libre: Aforo disponible actualmente
 asistentes: Lista con los asistentes al festival
 servicios: Lista de servicios que ofrece el festival
@@ -30,13 +29,12 @@ class Festival:
 
 
 
-    def __init__(self, nombre: str, fecha: str, lugar: str, aforo: int, coste: float, permisos: List[str]):
+    def __init__(self, nombre: str, fecha: str, lugar: str, aforo: int, coste: float):
         self._nombre = nombre
         self._fecha = fecha
         self._lugar = lugar
         self.__aforo = aforo
         self.__coste = coste
-        self.__permisos = permisos
         self.__aforo_libre = aforo
         self.asistentes = []
         self.servicios = []
@@ -61,16 +59,6 @@ class Festival:
 
 
 
-    def anyadir_permisos(self, nuevo_permiso: str) -> None:
-        """
-        Añadir nuevos permisos al festival
-        Parametros
-        ---------
-        nuevo_permiso: permiso que se va a añadir a los actuales
-
-        Retorna: None
-        """
-        self.__permisos += nuevo_permiso
 
     def anyadir_servicio(self, servicio: object) -> None:
         """
