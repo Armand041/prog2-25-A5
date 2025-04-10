@@ -7,7 +7,7 @@ class Público(Persona):
 
     Atributos
     ---------
-    fecha_nacimiento: int
+    fecha_nacimiento: str
         Fecha de nacimiento de la persona del público en formato dd/mm/aaaa
     dni: str
         Documento Nacional de Identidad de la persona del público
@@ -32,6 +32,12 @@ class Público(Persona):
 
     devolver_entrada(self, precio)-> str:
         Devuelve una entrada y el dinero correspondiente al comprador de esta
+
+    ver_saldo(self)-> float
+        Devuelve el dinero actual del usuario
+
+    actualizar_tipo_entrada(self, nuevo_tipo_entrada: str)->None
+        Cambia el tipo de entrada que tiene la persona
 
     comprar_servicio(self, servicio: Servicio, producto: str) -> str:
         Permite comprar un producto de un servicio del festival
@@ -94,6 +100,23 @@ class Público(Persona):
         self.__dinero_actual += precio
         return f"Entrada devuelta. Dispone de: {self.__dinero_actual}€"
 
+    def ver_saldo(self) -> float:
+        """
+        Método que devuelve el dinero actual 
+        """
+        return self.__dinero_actual
+
+    def actualizar_tipo_entrada(self, nuevo_tipo_entrada: str) -> None:
+        """
+        Método que cambia el tipo de entrada que tiene la persona
+
+        Parámetros:
+        ----------
+        nuevo_tipo_entrada: str
+            Nuevo tipo de entrada
+        """
+        self.__tipo_entrada = nuevo_tipo_entrada
+
     def comprar_servicio(self, servicio: Servicio, producto: str) -> str:
         '''
         Método que permite comprar un producto de un servicio del festival
@@ -105,19 +128,24 @@ class Público(Persona):
         producto: str
             Nombre del producto a comprar
         '''
-        if producto not in servicio.productos:
-            return 'Producto no disponible'
+        productos_inf = servicio.obtener_informacion()
 
-        precio = servicio.productos[producto]
+        if isinstance(productos_inf, dict):
+            if producto in productos_inf:
+                precio = productos_inf[producto]
 
-        if self.__dinero_actual >= precio:
-            self.__dinero_actual -= precio
-            return f"Producto '{producto}' comprado por {precio}€. Dinero restante: {self.__dinero_actual}€"
+                if self.__dinero_actual >= precio:
+                    self.__dinero_actual -= precio
+                    return f"Producto '{producto}' comprado por {precio}€. Dinero restante: {self.__dinero_actual}€"
+                else:
+                    return f"No dispone de saldo suficiente"
+            else:
+                return f"Producto no disponible en el servicio"
         else:
-            return f"No dispone de saldo suficiente"
+            return f"este servicio no ofrece productos"
 
     def __str__(self)-> str:
         '''
         Devuelve una representación en cadena de texto del objeto
         '''
-        return f"Nombre: {self._nombre} \n Fecha de nacimiento: {self._Persona__fecha_nacimiento} \n DNI: {self._Persona__dni} \n Primer apellido: {self._Persona__apellido1}, segundo apellido: {self._Persona__apellido2} \n Tipo de entrada: {self.__tipo_entrada} \n Dinero disponible: {self.__dinero_actual}€"
+        return f" {self._nombre} tiene una entrada {self.__tipo_entrada} y dispone de {self.__dinero_actual}€"
