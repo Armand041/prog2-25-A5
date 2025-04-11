@@ -84,7 +84,7 @@ def get_datos_festival():
             reader= csv.reader(festivales, delimiter=',')
             for row in reader:
                 if festival==row[0]:
-                    return f'El festival {row[0]} se celebrará en la fecha {row[1]} en {row[2]}. \nEl aforo total es {row[3]}, solo quedan {row[5]} huecos. Costará {row[4]}€ en total. Sus servicios son: {row[7]}', 200
+                    return f'El festival {row[0]} se celebrará en la fecha {row[1]} en {row[2]}. \nEl aforo total es {row[3]}, solo quedan {row[5]} huecos. Costará {row[4]}€ en total. Sus servicios son: {row[7]} y los cantantes invitados son {row[8]}', 200
             return f'El festival {festival} no fue encontrado', 404
     except FileNotFoundError:
         return 'No encontrado el archivo con los festivales', 404
@@ -108,11 +108,81 @@ def crear_festival():
                     return f'El festival {nombre} ya existe', 409
     except FileNotFoundError:
         return 'No existe el documento con los festivales', 404
-    datos.append([nombre,fecha,lugar,aforo,coste,aforo,[],[]])
+    datos.append([nombre,fecha,lugar,aforo,coste,aforo,[],[],[]])
     with open('informacion_festivales.csv', 'r') as info:
         writer = csv.writer(info, delimiter=',')
         writer.writerows(datos)
         return f'Festival {nombre} añadido correctamente', 200
+
+@app.route('/data', methods=['PUT'])
+@jwt_required()
+def modificar_festival():
+    nombre = request.args.get('nombre', '')
+    servicio = request.args.get('servicio', '')
+    artista = request.args.get('artista', '')
+    atendiente = request.args.get('atendiente', '')
+    fecha = request.args.get('fecha', '')
+    aforo = request.args.get('aforo', '')
+    coste = request.args.get('coste', '')
+    lugar = request.args.get('lugar', '')
+
+
+    with open('informacion_festivales.csv', 'r') as csv_file, open('inf_festivales_aux.csv', 'w') as aux_file:
+        reader = csv.reader(csv_file)
+        writer = csv.writer(aux_file)
+
+        for row in reader:
+            if row[0] == nombre:
+                fila = [nombre]
+                if fecha != '':
+                    fila.append(fecha)
+                else:
+                    fila.append(row[1])
+                if lugar != '':
+                    fila.append(lugar)
+                else:
+                    fila.append(row[2])
+                if aforo != '':
+                    fila.append(aforo)
+                else:
+                    fila.append(row[3])
+                if coste != '':
+                    fila.append(coste)
+                else:
+                    fila.append(row[4])
+                if aforo != '':
+                    fila.append(aforo - (row[3]-row[5]))
+                else:
+                    fila.append(row[5])
+                if atendiente != '':
+                    nuevos_atendientes = row[6]
+                    for letter in atendiente:
+                        nuevos_atendientes.insert(-2,letter)
+                    fila.append(nuevos_atendientes)
+                else:
+                    fila.append(row[6])
+                if servicio != '':
+                    nuevos_servicios = row[7]
+                    for letter in servicio:
+                        nuevos_servicios.insert(-2,letter)
+                    fila.append(nuevos_servicios)
+                else:
+                    fila.append(row[7])
+                if artista != '':
+                    nuevo_artista = row[8]
+                    for letter in artista:
+                        nuevo_artista.insert(-2,letter)
+                    fila.append(nuevo_artista)
+                else:
+                    fila.append(row[8])
+                writer.writerows(fila)
+            else:
+                writer.writerow(row)
+        with open('informacion_festivales.csv', 'w') as csv_file, open('inf_festivales_aux.csv', 'r') as aux_file:
+            reader = csv.reader(aux_file)
+            writer = csv.writer(csv_file)
+            for row in reader:
+                writer.writerow(row)
 
 @app.route('/data', methods=['DELETE'])
 @jwt_required()

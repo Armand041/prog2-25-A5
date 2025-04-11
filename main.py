@@ -106,16 +106,10 @@ while True:
         else:
             festival = seleccionar_festival()
             opcion_servicio=''
-            opciones_mod=['1','2','3','4','5','6','7','8']
+            opciones_mod=['1','2']
             while opcion_servicio not in opciones_mod:
                 print('1. Añadir servicio: ')
-                print('2. Eliminar servicio: ')
-                print('3. Añadir trabajador: ')
-                print('4. Eliminar trabajador: ')
-                print('5. Añadir artista: ')
-                print('6. Eliminar artista: ')
-                print('7. Añadir atendiente: ')
-                print('8. Eliminar atendiente: ')
+                print('2. Añadir artista: ')
                 opcion_servicio = input('Introduce una de las opciones (por número): ')
 
             if opcion_servicio == '1':
@@ -159,14 +153,10 @@ while True:
                     entradasSeguridad1 = EntradasSeguridad(nombre, horario, alquiler, lugar, [])
                     festival.anyadir_servicio(entradasSeguridad1)
 
-            elif opcion_servicio == '2':
-                servicio_a_eliminar = seleccionar_servicio_de_festival(festival)
-                for servicio in festival.servicios:
-                    if servicio.nombre == servicio_a_eliminar.nombre:
-                        festival.servicios.remove(servicio_a_eliminar)
-                        print(f"El servicio {servicio_a_eliminar.nombre} se ha eliminado.")
+                r = requests.put(f'{URL}/data?nombre={festival}&servicio={nombre}')
+                print(f'{r.text} ({r.status_code})')
 
-            elif opcion_servicio == '3':
+            elif opcion_servicio == '2':
                 servicio_introducir_trabjador = seleccionar_servicio_de_festival(festival)
 
                 fecha_nacimiento = input('Introduce tu fecha de nacimiento: ')
@@ -178,18 +168,8 @@ while True:
 
                 trabajador = Staff(fecha_nacimiento, dni, nombre, apellido1, sueldo, servicio_introducir_trabjador.horario, '' , apellido2)
                 servicio_introducir_trabjador.contratar_trabajador(trabajador)
-
-            elif opcion_servicio == '4':
-                servicio_eliminar_trabjador = seleccionar_servicio_de_festival(festival)
-                trabajador_a_eliminar = seleccionar_trabajador_de_servicio(servicio_eliminar_trabjador)
-
-                for trabajador in servicio_eliminar_trabjador.trabajadores:
-                    if trabajador.dni == trabajador_a_eliminar.dni:
-                        servicio_eliminar_trabjador.trabajadores.remove(trabajador_a_eliminar)
-                        print(f"El trabajador {trabajador_a_eliminar.nombre} ({trabajador_a_eliminar.dni}) se ha eliminado.")
-
-
-
+                r = requests.put(f'{URL}/data?nombre={festival}&artista={nombre}')
+                print(f'{r.text} ({r.status_code})')
 
 
     elif opcion == '4':
