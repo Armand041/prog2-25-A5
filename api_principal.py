@@ -242,7 +242,7 @@ def mostrar_publico():
     dni_publico=[]
     contador=0
     try:
-        with open('publico.csv.csv', 'r') as info:
+        with open('publico.csv', 'r') as info:
             reader = csv.reader(info, delimiter=',')
             for row in reader:
                 if contador==0:

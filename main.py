@@ -14,7 +14,7 @@ from Personal.artista import Artista
 from Personal.persona import Persona
 from Personal.staff import Staff
 from servicio import EntradasSeguridad, SonidoLuces, Merch, Tattoo, Bebida, Comida
-
+URL = 'http://127.0.0.1:5000/'
 festivales = []
 URL = 'http://127.0.0.1:5000/'
 
@@ -218,6 +218,10 @@ while True:
             festival.anyadir_persona(nuevo_usuario)
             print('Nuevo asistente añadido al festival')
     elif opcion == '5':
+        usuario = str(input('Usuario: '))
+        password = str(input('Password: '))
+        r = requests.get(f'{URL}/signin?user={usuario}&password={password}')
+
         pass
     elif opcion == '6':
         for festival in festivales:
@@ -235,8 +239,11 @@ while True:
         trabajador = seleccionar_trabajador_de_servicio(servicio)
         print(trabajador)
     elif opcion == '10':
+
+
         pass
     elif opcion == '11':
+        r = requests.get(f'{URL}/data/publico')
         pass
     elif opcion == '12':
         print('Cerrando programa)')
