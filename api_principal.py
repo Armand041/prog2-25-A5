@@ -76,7 +76,7 @@ def signout():
         writer.writerows(datos_nuevos)
         return f'El usuario {user} fue eliminado correctamente', 200
 
-@app.route('/data', mwthods=['GET'])
+@app.route('/data', methods=['GET'])
 def get_datos_festival():
     festival = request.args.get('festival', '')
     try:

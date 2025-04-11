@@ -7,6 +7,7 @@ para manejar los distintos festivales y personas que trabajan en ellos y acuden 
 Permite que estos datos se guarden en ficheros para que tengan permanencia.
 """
 
+import requests
 from festival import Festival
 from publico import Publico
 from Personal.artista import Artista
@@ -15,6 +16,7 @@ from Personal.staff import Staff
 from servicio import EntradasSeguridad, SonidoLuces, Merch, Tattoo, Bebida, Comida
 
 festivales = []
+URL = 'http://127.0.0.1:5000/'
 
 def seleccionar_festival():
     opc_festival = ''
@@ -73,6 +75,7 @@ while True:
         opcion = input('Introduce una de las opciones (por número): ')
 
     if opcion == '1':
+
         nombre_fest = input('Introduce el nombre del festival a crear: ')
         fecha_fest = input('Introduce la fecha del festival a crear: ')
         lugar_fest = input('Introduce el lugar del festival: ')
@@ -86,18 +89,16 @@ while True:
                 coste_fest = float(input('Introduce el coste del festival (en €): '))
             except TypeError:
                 print('Por favor, introduzca un número')
-        festival_nuevo = Festival(nombre_fest, fecha_fest, lugar_fest, aforo_fest, coste_fest)
-        festivales.append(festival_nuevo)
-        print('Nuevo festival creado')
+
+        r = requests.post(f'{URL}/data?nombre={nombre_fest}&fecha={fecha_fest}&lugar={lugar_fest}&aforo={aforo_fest}&coste={coste_fest}')
+        print(r.text + ' (' + str(r.status_code)+ ')')
 
     elif opcion == '2':
-        if not festivales:
-            print('No hay festivales disponibles para eliminar')
-        else:
-            print('Elige un festival para eliminar')
-            festival_a_eliminar = seleccionar_festival()
-            festivales.remove(festival_a_eliminar)
-            print('Festival eliminado correctamente')
+        print('Elige un festival para eliminar')
+        festival_a_eliminar = seleccionar_festival()
+
+        r = requests.delete(f'{URL}/data?festival={festival_a_eliminar}')
+        print(r.text + ' (' + str(r.status_code)+ ')')
 
     elif opcion == '3':
         if len(festivales) == 0:
