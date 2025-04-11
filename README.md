@@ -1,4 +1,4 @@
-# [Gestión de festivales]
+# Gestión de festivales
 [//]: # (Incluid aquí la descripción de vuestra aplicación. Por cierto, así se ponen comentarios en Markdown)
 Este proyecto busca simplificar el almacenamiento y estructuración de festivales, para ayudar a clientes y organizadores a tener una mejor idea de la organización de sus eventos musicales favoritos. Permitirá planear, modificar y ejecutar varios festivales en diferentes lugares y tiempos. Añdiendo también una lista de artistas invitados, que contará con la opción de poder escuchar las canciones y comprar entradas para los diferentes festivales. 
 
@@ -16,13 +16,15 @@ Este proyecto busca simplificar el almacenamiento y estructuración de festivale
 
 ## Requisitos
 [//]: # (Indicad aquí los requisitos de vuestra aplicación, así como el alumno responsable de cada uno de ellos)
-- Crear, modificar y eliminar festivales (lugar, fecha, duración): Raúl Uclés Lajara 
+- Crear, modificar y eliminar festivales (lugar, fecha, duración, coste, aforo/espacio libre, permisos): Raúl Uclés Lajara 
 
-- Añadir artistas invitados (canciones a cantar, dias que cantan, duración) : Pablo Serna Soriano 
+- Añadir artistas invitados (canciones a cantar, dias que cantan, duración) y Trabajadores varios: Pablo Serna Soriano 
 
-- Añadir servicios y staff a los diferentes festivales (que ofrecen, precio, horario): Maria Ripoll Gomis 
+- Añadir servicios a los diferentes festivales (que ofrecen, precio, horario, lugar donde se ubican, trabajadores): Maria Ripoll Gomis 
 
-- Diferentes tipos de entradas (VIP, normales, front-stage) y disponibilidad (stock/aforo) : David Díez Pérez 
+- Creacion de Publico (Tipo de entrada) y relacion Publico/Festival (Aforo, asistencia): David Díez Pérez
+
+- Relación de Servicios/Festival y Artista/Festival: David Díez Pérez 
 
 - Permitirá acceder a canciones populares de los artistas (API de Spotify o Youtube): Daniel Paredes Valverde 
 
@@ -32,7 +34,9 @@ Este proyecto busca simplificar el almacenamiento y estructuración de festivale
 
 - Permitirá descargar un cartel con información del festival: Pablo Serna Soriano 
 
-- Base de datos con la información de los eventos: Raúl Uclés Lajara 
+- Base de datos con la información de los eventos: Raúl Uclés Lajara
+
+- Clase Persona, Publico y relaciones Trabajador/Trabajo: Daniel Paredes Valverde 
 
 ## Instrucciones de instalación y ejecución
 [//]: # (Indicad aquí qué habría que hacer para ejecutar vuestra aplicación)

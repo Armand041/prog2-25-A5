@@ -1,0 +1,17 @@
+from persona import Persona
+from artista import Artista
+from staff import Staff
+from cancion_ya_existe_error import CancionYaExiste
+from cancion_no_encontrada_error import CancionNoEncontrada
+
+a1= Artista('10/10/1999', '12345678U', 'Pepe', 'Pepón', 500, '9:00-5:00', ['Juan', 'Juanote'])
+
+
+a1.eliminar_cancion('Juan')
+a1.anyadir_cancion('Pepa')
+a1.actualizar_sueldo(550.0)
+a1.actualizar_sueldo(600)
+print(a1._Artista__canciones_populares)
+print(a1._Staff__sueldo)
+
+a1.eliminar_cancion('No existe')
