@@ -108,8 +108,8 @@ def crear_festival():
                     return f'El festival {nombre} ya existe', 409
     except FileNotFoundError:
         return 'No existe el documento con los festivales', 404
-    datos.append([nombre,fecha,lugar,aforo,coste,aforo,[],[],[]])
-    with open('informacion_festivales.csv', 'r') as info:
+    datos.append([nombre,fecha,lugar,aforo,coste,aforo])
+    with open('informacion_festivales.csv', 'w') as info:
         writer = csv.writer(info, delimiter=',')
         writer.writerows(datos)
         return f'Festival {nombre} añadido correctamente', 200
@@ -184,6 +184,7 @@ def modificar_festival():
             for row in reader:
                 writer.writerow(row)
 
+
 @app.route('/data', methods=['DELETE'])
 @jwt_required()
 def eliminar_festival():
@@ -207,17 +208,18 @@ def eliminar_festival():
         writer.writerows(datos_nuevos)
         return f'El festival {festival} fue eliminado correctamente', 200
 
+
 #Notar que devuelve una lista
 @app.route('/data_nombres', methods=['GET'])
 def mostrar_festivales():
-    nombres_festi=[]
-    contador=0
+    nombres_festi = []
+    contador = 0
     try:
         with open('informacion_festivales.csv', 'r') as info:
             reader = csv.reader(info, delimiter=',')
             for row in reader:
-                if contador==0:
-                    contador+=1
+                if contador == 0:
+                    contador += 1
                 else:
                     nombres_festi.append(row[0])
     except FileNotFoundError:

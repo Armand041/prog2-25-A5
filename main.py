@@ -18,6 +18,7 @@ URL = 'http://127.0.0.1:5000/'
 festivales = []
 URL = 'http://127.0.0.1:5000/'
 
+
 def seleccionar_festival():
     opc_festival = ''
     opciones_validas = [str(i + 1) for i in range(len(festivales))]
@@ -55,52 +56,92 @@ def seleccionar_trabajador_de_servicio(servicio):
 
 while True:
     opcion = ''
-    opciones = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
+    opciones = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13']
 
     while opcion not in opciones:
         # Pueden haber más o menos opciones esto es un ejemplo y primera idea
-        print('1. Crear festival')
-        print('2. Eliminar festival')
-        print('3. Modificar festival')
-        print('4. Crear usuario')
-        print('5. Iniciar sesión')
-        print('6. Mostrar festivales')
-        print('7. Mostrar información de un festival')
-        print('8. Mostrar datos de un servicio')
-        print('9. Mostrar datos de un trabajador')
-        print('10. Mostrar datos de un artista')# Aquí hacemos tambien que te muestre lo de la api que está en la clase artista
+        print('1. Registrar usuario')
+        print('2. Iniciar sesión')
+        print('3. Eliminar usuario')
+        print('4. Crear festival')
+        print('5. Eliminar festival')
+        print('6. Modificar festival')
+        print('7. Mostrar festivales')
+        print('8. Mostrar información de un festival')
+        print('9. Mostrar datos de un servicio')
+        print('10. Mostrar datos de un trabajador')
+        print('11. Mostrar datos de un artista')# Aquí hacemos tambien que te muestre lo de la api que está en la clase artista
         # podemos añadir tambien que muestre los artistas disponibles
-        print('11. Mostrar datos de un atendiente')
-        print('12. Terminar')
+        print('12. Mostrar datos de un atendiente')
+        print('13. Terminar')
         opcion = input('Introduce una de las opciones (por número): ')
 
+
     if opcion == '1':
+        usuario = input('Elige un nombre de usuario: ')
+        password = input('Elige una contraseña: ')
+        r = requests.post(f'{URL}/signup?user={usuario}&password={password}')
+        if r.status_code == 200:
+            print(f'Usuario {usuario} creado correctamente')
+        else:
+            print(f'Error al crear usuario: {r.status_code} - {r.text}')
+
+    elif opcion == '2':
+        usuario = input('Usuario: ')
+        password = input('Password: ')
+        r = requests.get(f'{URL}/signin?user={usuario}&password={password}')
+        if r.status_code == 200:
+            token = r.text
+            print('Inicio de sesión correcto')
+        else:
+            print('Error al iniciar sesión:', r.text)
+
+    elif opcion == '3':
+        usuario = input('Introduce el nombre de usuario a eliminar: ')
+        password = input('Introduce la contraseña del usuario: ')
+        r = requests.delete(f'{URL}/signout?user={usuario}&password={password}')
+        if r.status_code == 200:
+            print(f'Usuario {usuario} eliminado correctamente')
+        else:
+            print(f'Error al eliminar usuario: {r.status_code} - {r.text}')
+
+    elif opcion == '4':
 
         nombre_fest = input('Introduce el nombre del festival a crear: ')
         fecha_fest = input('Introduce la fecha del festival a crear: ')
         lugar_fest = input('Introduce el lugar del festival: ')
         aforo_fest = input('Introduce el aforo del festival a crear: ')
-        if not aforo_fest.isdigit():
+        while not aforo_fest.isdigit():
             print('Por favor, introduzca un número entero')
-            aforo_fest = int(input('\nIntroduce el aforo del festival a crear: '))
+            aforo_fest = input('Introduce el aforo del festival a crear: ')
+        aforo_fest = int(aforo_fest)
         coste_fest = ''
-        while type(coste_fest) != float:
+        while True:
             try:
                 coste_fest = float(input('Introduce el coste del festival (en €): '))
-            except TypeError:
-                print('Por favor, introduzca un número')
+                break
+            except ValueError:
+                print('Por favor, introduzca un número válido')
+        r = requests.post(f'{URL}/data?nombre={nombre_fest}&fecha={fecha_fest}&lugar={lugar_fest}&aforo={aforo_fest}&coste={coste_fest}', headers={'Authorization': f'Bearer {token}'})
+        print(r.text + ' (' + str(r.status_code) + ')')
 
-        r = requests.post(f'{URL}/data?nombre={nombre_fest}&fecha={fecha_fest}&lugar={lugar_fest}&aforo={aforo_fest}&coste={coste_fest}')
-        print(r.text + ' (' + str(r.status_code)+ ')')
+        if r.status_code == 200:
+            nuevo_festival = Festival(nombre_fest, fecha_fest, lugar_fest, aforo_fest, coste_fest)
+            festivales.append(nuevo_festival)
 
-    elif opcion == '2':
-        print('Elige un festival para eliminar')
-        festival_a_eliminar = seleccionar_festival()
 
-        r = requests.delete(f'{URL}/data?festival={festival_a_eliminar}')
-        print(r.text + ' (' + str(r.status_code)+ ')')
+    elif opcion == '5':
+        if not festivales:
+            print("No hay festivales disponibles. Carga o crea alguno primero.")
+        else:
+            print('Elige un festival para eliminar:')
+            festival_a_eliminar = seleccionar_festival()
+            r = requests.delete(f'{URL}/data?festival={festival_a_eliminar.nombre}', headers={'Authorization': f'Bearer {token}'})
+            print(r.text + ' (' + str(r.status_code) + ')')
+            if r.status_code == 200:
+                festivales.remove(festival_a_eliminar)
 
-    elif opcion == '3':
+    elif opcion == '6':
         if len(festivales) == 0:
             print('No hay festivales disponibles')
         else:
@@ -171,60 +212,35 @@ while True:
                 r = requests.put(f'{URL}/data?nombre={festival}&artista={nombre}')
                 print(f'{r.text} ({r.status_code})')
 
-
-    elif opcion == '4':
-        if len(festivales) == 0:
-            print('No hay festivales disponibles para añadir asistentes')
-        else:
-            print('Selecciona un festival para añadir al asistente:')
-            festival = seleccionar_festival()
-
-            print('\nCrear nuevo usuario:')
-            nombre = input('Nombre: ')
-            apellido1 = input('Primer apellido: ')
-            fecha_nacimiento = input('Fecha de nacimiento (dd/mm/aaaa): ')
-            dni = input('DNI: ')
-            tipo_entrada = input('Tipo de entrada (General/VIP/...): ')
-            dinero_actual = ''
-            while True:
-                try:
-                    dinero_actual = float(input('Dinero disponible (€): '))
-                    break
-                except ValueError:
-                    print('Por favor, introduce un número válido para el dinero (float)')
-
-            nuevo_usuario = Publico(fecha_nacimiento, dni, nombre, apellido1, tipo_entrada, dinero_actual)
-
-            festival.anyadir_persona(nuevo_usuario)
-            print('Nuevo asistente añadido al festival')
-    elif opcion == '5':
-        usuario = str(input('Usuario: '))
-        password = str(input('Password: '))
-        r = requests.get(f'{URL}/signin?user={usuario}&password={password}')
-
-        pass
-    elif opcion == '6':
-        for festival in festivales:
-            print(f"{festival}\n")
     elif opcion == '7':
+        r = requests.get(f'{URL}/data_nombres')
+        if r.status_code == 200:
+            nombres = r.text.strip("[]").replace("'", "").split(", ")
+            print('Festivales registrados:')
+            for nombre in nombres:
+                print(f"- {nombre}")
+        else:
+            print(f'Error al obtener festivales: {r.status_code} - {r.text}')
+
+    elif opcion == '8':
         festival = seleccionar_festival()
         print(festival)
-    elif opcion == '8':
+    elif opcion == '9':
         festival = seleccionar_festival()
         servicio = seleccionar_servicio_de_festival(festival)
         print(servicio)
-    elif opcion == '9':
+    elif opcion == '10':
         festival = seleccionar_festival()
         servicio = seleccionar_servicio_de_festival(festival)
         trabajador = seleccionar_trabajador_de_servicio(servicio)
         print(trabajador)
-    elif opcion == '10':
-
-
-        pass
     elif opcion == '11':
-        r = requests.get(f'{URL}/data/publico')
+
+
         pass
     elif opcion == '12':
+        r = requests.get(f'{URL}/data/publico')
+        pass
+    elif opcion == '13':
         print('Cerrando programa)')
         break
