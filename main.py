@@ -18,6 +18,19 @@ URL = 'http://127.0.0.1:5000/'
 festivales = []
 URL = 'http://127.0.0.1:5000/'
 
+import csv
+
+def cargar_festivales_desde_csv():
+    festivales.clear()
+    try:
+        with open('informacion_festivales.csv', 'r') as archivo:
+            lector = csv.reader(archivo)
+            for row in lector:
+                nombre, fecha, lugar, aforo, coste = row[:5]
+                fest = Festival(nombre, fecha, lugar, aforo, coste)
+                festivales.append(fest)
+    except FileNotFoundError:
+        print("Archivo de festivales no encontrado.")
 
 def seleccionar_festival():
     opc_festival = ''
@@ -53,6 +66,8 @@ def seleccionar_trabajador_de_servicio(servicio):
         opc_trabajador = input('Selecciona un trabajador (por número): ')
 
     return servicio.trabajadores[int(opc_trabajador) - 1]
+
+cargar_festivales_desde_csv()
 
 while True:
     opcion = ''
@@ -142,16 +157,14 @@ while True:
                 festivales.remove(festival_a_eliminar)
 
     elif opcion == '6':
-        if len(festivales) == 0:
-            print('No hay festivales disponibles')
-        else:
-            festival = seleccionar_festival()
-            opcion_servicio=''
-            opciones_mod=['1','2']
-            while opcion_servicio not in opciones_mod:
-                print('1. Añadir servicio: ')
-                print('2. Añadir artista: ')
-                opcion_servicio = input('Introduce una de las opciones (por número): ')
+
+        festival = seleccionar_festival()
+        opcion_servicio=''
+        opciones_mod=['1','2']
+        while opcion_servicio not in opciones_mod:
+            print('1. Añadir servicio: ')
+            print('2. Añadir artista: ')
+            opcion_servicio = input('Introduce una de las opciones (por número): ')
 
             if opcion_servicio == '1':
                 opcion_puesto = ''
