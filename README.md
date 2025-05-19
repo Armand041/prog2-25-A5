@@ -39,8 +39,142 @@ Este proyecto busca simplificar el almacenamiento y estructuración de festivale
 - Clase Persona, Publico y relaciones Trabajador/Trabajo: Daniel Paredes Valverde 
 
 ## Instrucciones de instalación y ejecución
+
+- Primeramente debemos instalar un entorno virtual a través del fichero 'requirements.txt'.
+  Para ello podemos utilizar el comando **pip install -r requirements.txt'** en la terminal de Linux
+
+- A continuación ejecutaremos el fichero 'api_principal.py' 
+
+- Por último, ejecutaremos el ficher 'main.py'
+
 [//]: # (Indicad aquí qué habría que hacer para ejecutar vuestra aplicación)
 
 ## Resumen de la API
-[//]: # (Cuando tengáis la API, añadiréis aquí la descripción de las diferentes llamadas.)
-[//]: # (Para la evaluación por pares, indicaréis aquí las diferentes opciones de vuestro menú textual, especificando para qué sirve cada una de ellas)
+
+
+#### USUARIOS
+
+- Sign up: Registra un **nuevo** usuario
+    
+    - POST 
+
+    - Usuario: Nombre del usuario
+
+    - Password: Contraseña para iniciar sesión
+
+
+- Sign in: Inicia sesión en un usuario **existente**
+    
+    - GET
+    
+    - Usuario: Nombre del usuario
+
+    - Password: Contraseña para inciciar sesión
+
+- Sign out: Elimina un usuario **existente**
+    
+    - DELETE
+    
+    - Usuario: Nombre del usuario
+
+    - Password: Contraseña para inciciar sesión
+
+
+#### Festival
+
+- Crear festival
+    
+    - POST
+    
+    - Requiere JWT 
+
+    - Parámetros: nombre, fecha, lugar, aforo, coste
+    
+
+- Modificar festival 
+  
+    - PUT 
+ 
+    - Requiere JWT
+
+    - Parámetros : nombre, servicio, artista, atendiente, fecha, aforo, coste, lugar
+
+
+- Borrar festival 
+  
+    - DELETE
+ 
+    - Requiere JWT
+
+    - Parámetros: datos_nuevos(list), festi_found(bool), festival
+  
+
+- Get_datos_festival
+    
+    - GET
+    
+    - No requiere JWT 
+
+    - Parámetros: festival
+
+
+- Mostrar festivales: Muestra el nombre de todos los festivales creados
+  
+    - GET
+ 
+    - No requiere JWT
+
+    - Parámetros: nombres_festi
+
+
+#### STAFF, ARTISTAS Y PUBLICO
+
+- Datos_artista
+    
+    - GET     
+
+    - No requiere JWT
+
+    - Parámetros: artista, datos(object)
+    
+
+- Mostrar_publico
+    
+    - GET     
+
+    - No requiere JWT
+
+    - Parámetros: nombres_publico, dni_publico
+
+
+- Mostrar_trabajadores
+    
+    - GET     
+
+    - No requiere JWT
+
+    - Parámetros: nombres_trabajadores, dni_trabajadores
+
+
+### SERVICIOS 
+
+- Anyadir_servicio
+    
+    - POST   
+
+    - Requiere JWT
+
+    - Parámetros: datos_festi, datos_servicios, nombre_festi, nombre_servicio, 
+  
+      lugar, horario, alquiler, trabajadores, festi_found(bool) 
+
+
+- Mostrar_servicios
+    
+    - GET
+
+    - No requiere JWT
+
+    - Parámetros: nombres_servi
+  
+     
