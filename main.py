@@ -157,73 +157,75 @@ while True:
                 festivales.remove(festival_a_eliminar)
 
     elif opcion == '6':
+        if len(festivales) == 0:
+            print('No hay festivales')
+        else:
+            festival = seleccionar_festival()
+            opcion_servicio=''
+            opciones_mod=['1','2']
+            while opcion_servicio not in opciones_mod:
+                print('1. Añadir servicio: ')
+                print('2. Añadir artista: ')
+                opcion_servicio = input('Introduce una de las opciones (por número): ')
 
-        festival = seleccionar_festival()
-        opcion_servicio=''
-        opciones_mod=['1','2']
-        while opcion_servicio not in opciones_mod:
-            print('1. Añadir servicio: ')
-            print('2. Añadir artista: ')
-            opcion_servicio = input('Introduce una de las opciones (por número): ')
+                if opcion_servicio == '1':
+                    opcion_puesto = ''
+                    opciones_puestos = ['1', '2', '3', '4', '5', '6']
+                    while opcion_puesto not in opciones_puestos:
+                        print('1. Puesto de Comida')
+                        print('2. Puesto de Bebidas')
+                        print('3. Puesto de de Tatuajes')
+                        print('4. Puesto de Merchandising')
+                        print('5. Servicio de Luces y Sonido')
+                        print('6. Servicio de Seguridad de las entradas')
+                        opcion_puesto = input('Introduce una de las opciones (por número): ')
 
-            if opcion_servicio == '1':
-                opcion_puesto = ''
-                opciones_puestos = ['1', '2', '3', '4', '5', '6']
-                while opcion_puesto not in opciones_puestos:
-                    print('1. Puesto de Comida')
-                    print('2. Puesto de Bebidas')
-                    print('3. Puesto de de Tatuajes')
-                    print('4. Puesto de Merchandising')
-                    print('5. Servicio de Luces y Sonido')
-                    print('6. Servicio de Seguridad de las entradas')
-                    opcion_puesto = input('Introduce una de las opciones (por número): ')
+                    nombre = input('Introduce el nombre del servicio: ')
+                    horario = input('Introduce el horario del servicio: ')
+                    alquiler = float(input('Introduce el costo del alquiler del servicio: '))
+                    lugar  = input('Introduce el lugar donde se encuentra el puesto: ')
 
-                nombre = input('Introduce el nombre del servicio: ')
-                horario = input('Introduce el horario del servicio: ')
-                alquiler = float(input('Introduce el costo del alquiler del servicio: '))
-                lugar  = input('Introduce el lugar donde se encuentra el puesto: ')
+                    if opcion_puesto == '1':
+                        comida1 = Comida(nombre, horario, alquiler, lugar, [])
+                        festival.anyadir_servicio(comida1)
 
-                if opcion_puesto == '1':
-                    comida1 = Comida(nombre, horario, alquiler, lugar, [])
-                    festival.anyadir_servicio(comida1)
+                    elif opcion_puesto == '2':
+                        bebida1 = Bebida(nombre, horario, alquiler, lugar, [])
+                        festival.anyadir_servicio(bebida1)
 
-                elif opcion_puesto == '2':
-                    bebida1 = Bebida(nombre, horario, alquiler, lugar, [])
-                    festival.anyadir_servicio(bebida1)
+                    elif opcion_puesto == '3':
+                        tattoo1 = Tattoo(nombre, horario, alquiler, lugar, [])
+                        festival.anyadir_servicio(tattoo1)
 
-                elif opcion_puesto == '3':
-                    tattoo1 = Tattoo(nombre, horario, alquiler, lugar, [])
-                    festival.anyadir_servicio(tattoo1)
+                    elif opcion_puesto == '4':
+                        merch1 = Merch(nombre, horario, alquiler, lugar, [])
+                        festival.anyadir_servicio(merch1)
 
-                elif opcion_puesto == '4':
-                    merch1 = Merch(nombre, horario, alquiler, lugar, [])
-                    festival.anyadir_servicio(merch1)
+                    elif opcion_puesto == '5':
+                        sonidoLuces1 = SonidoLuces(nombre, horario, alquiler, lugar, [])
+                        festival.anyadir_servicio(sonidoLuces1)
 
-                elif opcion_puesto == '5':
-                    sonidoLuces1 = SonidoLuces(nombre, horario, alquiler, lugar, [])
-                    festival.anyadir_servicio(sonidoLuces1)
+                    elif opcion_puesto == '6':
+                        entradasSeguridad1 = EntradasSeguridad(nombre, horario, alquiler, lugar, [])
+                        festival.anyadir_servicio(entradasSeguridad1)
 
-                elif opcion_puesto == '6':
-                    entradasSeguridad1 = EntradasSeguridad(nombre, horario, alquiler, lugar, [])
-                    festival.anyadir_servicio(entradasSeguridad1)
+                    r = requests.put(f'{URL}/data?nombre={festival}&servicio={nombre}')
+                    print(f'{r.text} ({r.status_code})')
 
-                r = requests.put(f'{URL}/data?nombre={festival}&servicio={nombre}')
-                print(f'{r.text} ({r.status_code})')
+                elif opcion_servicio == '2':
+                    servicio_introducir_trabjador = seleccionar_servicio_de_festival(festival)
 
-            elif opcion_servicio == '2':
-                servicio_introducir_trabjador = seleccionar_servicio_de_festival(festival)
+                    fecha_nacimiento = input('Introduce tu fecha de nacimiento: ')
+                    dni = input('Introduce tu dni: ')
+                    nombre = input('Introduce tu nombre: ')
+                    apellido1 = input('Introduce tu primer apellido: ')
+                    apellido2 = input('Introduce tu segundo apellido: ')
+                    sueldo = float(input('Introduce el sueldo: '))
 
-                fecha_nacimiento = input('Introduce tu fecha de nacimiento: ')
-                dni = input('Introduce tu dni: ')
-                nombre = input('Introduce tu nombre: ')
-                apellido1 = input('Introduce tu primer apellido: ')
-                apellido2 = input('Introduce tu segundo apellido: ')
-                sueldo = float(input('Introduce el sueldo: '))
-
-                trabajador = Staff(fecha_nacimiento, dni, nombre, apellido1, sueldo, servicio_introducir_trabjador.horario, '' , apellido2)
-                servicio_introducir_trabjador.contratar_trabajador(trabajador)
-                r = requests.put(f'{URL}/data?nombre={festival}&artista={nombre}')
-                print(f'{r.text} ({r.status_code})')
+                    trabajador = Staff(fecha_nacimiento, dni, nombre, apellido1, sueldo, servicio_introducir_trabjador.horario, '' , apellido2)
+                    servicio_introducir_trabjador.contratar_trabajador(trabajador)
+                    r = requests.put(f'{URL}/data?nombre={festival}&artista={nombre}')
+                    print(f'{r.text} ({r.status_code})')
 
     elif opcion == '7':
         r = requests.get(f'{URL}/data_nombres')
