@@ -74,7 +74,7 @@ def seleccionar_trabajador_de_servicio(servicio):
 
 while True:
     opcion = ''
-    opciones = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13','14','15','16']
+    opciones = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13','14','15','16','17']
 
     while opcion not in opciones:
         # Pueden haber más o menos opciones esto es un ejemplo y primera idea
@@ -88,13 +88,13 @@ while True:
         print('8. Mostrar información de un festival')
         print('9. Mostrar datos de un servicio')
         print('10. Mostrar datos de un trabajador')
-        print('11. Mostrar datos de un artista')# Aquí hacemos tambien que te muestre lo de la api que está en la clase artista
-        # podemos añadir tambien que muestre los artistas disponibles
-        print('12. Mostrar atendientes')
-        print('13. Anyadir publico')
-        print('14. Mostrar datos atendiente')
-        print('15. Eliminar atendiente')
-        print('16. Terminar')
+        print('11. Mostrar datos de un artista')
+        print('12. Mostrar todos los artistas')
+        print('13. Mostrar atendientes')
+        print('14. Anyadir publico')
+        print('15. Mostrar datos atendiente')
+        print('16. Eliminar atendiente')
+        print('17. Terminar')
         opcion = input('Introduce una de las opciones (por número): ')
 
     match opcion:
@@ -319,14 +319,16 @@ while True:
             r = requests.get(f'{URL}/data/artistas?artista={artista}')
             print(f'{r.text} \n(Status: {r.status_code})')
 
-
-
         case '12':
+            r = requests.get(f'{URL}/data/artistas?artista=')
+            print(f'{r.text} \n(Statues: {r.status_code})')
+
+        case '13':
             r = requests.get(f'{URL}/data/publico')
             print(r.text)
 
 
-        case '13':
+        case '14':
 
             festival = seleccionar_festival()
 
@@ -392,16 +394,16 @@ while True:
 
             print(f'{r.text} ({r.status_code})')
 
-        case '14':
+        case '15':
             nombre=input('Introduce el nombre del usuario: ')
             dni=input('Introduce su dni: ')
             r = requests.get(f'{URL}/data/publico_data?nombre={nombre}&dni={dni}')
             print(r.text)
 
-        case '15':
+        case '16':
             dni = input('Introduce el dni del atendiente a eliminar: ')
             r = requests.delete(f'{URL}/data/eliminar_publico?dni={dni}')
             print(f'{r.text}, {r.status_code}')
-        case '16':
+        case '17':
             print('Cerrando programa)')
             break
