@@ -506,6 +506,34 @@ def mostrar_publico():
         return 'No encontrado el archivo con los festivales', 404
     return f'Son publico las personas: {nombres_publico} con dni: {dni_publico} ', 200
 
+@app.route('/data/anyadir_publico', methods=['POST'])
+def anyadir_publico():
+
+
+   fecha_nacimiento = request.args.get('fecha_nacimiento', '')
+   dni = request.args.get('dni', '')
+   nombre = request.args.get('nombre', '')
+   apellido1  = request.args.get('apellido1', '')
+   apellido2  = request.args.get('apellido2', '')
+   tipo_entrada  = request.args.get('tipo_entrada', '')
+   dinero_actual = request.args.get('dinero_actual', '')
+
+
+   datos = [fecha_nacimiento,dni,nombre,apellido1,tipo_entrada,dinero_actual,apellido2]
+
+
+   try:
+       # Abrir en modo append para no sobrescribir
+       with open('publico.csv', 'a') as publico:
+           writer = csv.writer(publico, delimiter=',')
+           writer.writerow(datos)  # Escribir una fila
+       return 'Público añadido correctamente', 200
+
+
+
+
+   except FileNotFoundError:
+       return 'No se ha encontrado el archivo de publico', 404
 
 if __name__ == '__main__':
     app.run(debug=True)
