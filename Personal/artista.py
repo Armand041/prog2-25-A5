@@ -1,4 +1,5 @@
 from Personal.staff import Staff
+from artista_no_encontrado_error import ArtistaNoEncontrado
 from spotify_api import InformacionArtista
 
 
@@ -73,32 +74,45 @@ class Artista(Staff):
 
         super().__init__(fecha_nacimiento, dni, nombre, apellido1, sueldo, horario, puesto_trabajo, apellido2)
 
-        self.__canciones_populares = InformacionArtista(self._nombre).canciones_top()
+        try:
+            self.__canciones_populares = InformacionArtista(self._nombre).canciones_top()
+        except ArtistaNoEncontrado:
+            self.__canciones_populares = None
 
-    def mostrar_canciones_populares(self) -> None:
+    def mostrar_canciones_populares(self) -> str:
         """
         Méetodo que muestra todas las canciones populares de un artista y sus respectivos links
         a spotify.
         """
-        for cancion in self.__canciones_populares:
-            print(f'Canción: {cancion['Track']}, Link a la canción -> {cancion['Link']}')
+        if self.__canciones_populares:
+            canciones = [f'{cancion['Track']} -> {cancion['Link']}' for cancion in self.__canciones_populares]
+        else:
+            canciones = ['Artista no encontrado']
+        return '\n'.join(canciones)
 
-    def mostrar_albumes(self) -> None:
+    def mostrar_albumes(self) -> str:
         """
         Metodo que obtiene los albumes de un artista mediante el uso de la API de spotify
         y muestra sus álbumes y sus respectivos links a spotify
         """
-        albumes = InformacionArtista(self._nombre).albumes()
-        for album in albumes:
-            print(f'Álbum: {album['Album']}, Link al álbum -> {album['Link']}')
-
-    def mostrar_link_artista(self):
+        try:
+            albumes = InformacionArtista(self._nombre).albumes()
+        except ArtistaNoEncontrado:
+            return 'Artista no encontrado'
+        else:
+            albums = [f'Álbum: {album['Album']}, Link al álbum -> {album['Link']}' for album in albumes]
+            return '\n'.join(albums)
+    def mostrar_link_artista(self) -> str:
         """
         Metodo que muestra por pantalla un link a la pagina de spotify del artista
 
         """
-        link = InformacionArtista(self._nombre).link_artista()
-        print(f'Página principal del artista en spotify -> {link}')
+        try:
+            link = InformacionArtista(self._nombre).link_artista()
+        except ArtistaNoEncontrado:
+            return f'Artista no encontrado'
+        else:
+            return f'Página principal del artista en spotify -> {link}'
 
     def __str__(self) -> str:
         """
@@ -107,7 +121,7 @@ class Artista(Staff):
         :returns str
             Devuelve una cadena d etexto con los datos principales del artista.
         """
-        return f'{self._nombre} es un {self._puesto_trabajo}, \nCobra {self._sueldo}€ la hora, y su horario es {self._horario}.'
+        return f'----- {self._nombre.capitalize()} -----\n{self.mostrar_link_artista()}\n\nTop 10:\n{self.mostrar_canciones_populares()}'
 
 
 
