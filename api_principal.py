@@ -478,9 +478,9 @@ def mostrar_trabajadores():
 @app.route('/data/publico', methods=['GET'])
 def mostrar_publico():
     """
-    Devuelve una lista con los nombres y DNI de todas las personas del público.
+    Devuelve los nombres, DNI y tipo de entrada de todos los atendientes a los festivales.
 
-    Esta función abre el archivo publico.csv, y extrae los nombres y DNI de cada
+    Esta función abre el archivo publico.csv y extrae los nombres, DNI y tipo de entrada de cada
     persona registrada como público. Devuelve una cadena con ambas listas concatenadas
     de forma legible.
 
@@ -490,21 +490,27 @@ def mostrar_publico():
         - Mensaje con los nombres y DNI del público y código 200 si se lee correctamente el archivo.
         - Mensaje de error y código 404 si el archivo publico.csv no se encuentra.
     """
-    nombres_publico=[]
-    dni_publico=[]
-    contador=0
+    nombres = ''
+    dnis = ''
+    tipos_entrada = ''
+
+
     try:
-        with open('publico.csv', 'r') as info:
-            reader = csv.reader(info, delimiter=',')
+        with open('publico.csv', 'r') as publico:
+            reader = csv.reader(publico,delimiter=',')
+            line_count = 0
             for row in reader:
-                if contador==0:
-                    contador+=1
+                if line_count == 0:
+                    line_count += 1
                 else:
-                    nombres_publico.append(row[2])
-                    dni_publico.append(row[1])
+                    nombres += f'({row[2]})'
+                    dnis += f'({row[1]})'
+                    tipos_entrada += f'({row[4]})'
+
     except FileNotFoundError:
         return 'No encontrado el archivo con los festivales', 404
-    return f'Son publico las personas: {nombres_publico} con dni: {dni_publico} ', 200
+
+    return f'Son publico las personas {nombres}, con dni {dnis} y el tipo de entrada {tipos_entrada}', 200
 
 @app.route('/data/anyadir_publico', methods=['POST'])
 def anyadir_publico():
