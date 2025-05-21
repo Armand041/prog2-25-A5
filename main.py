@@ -37,6 +37,8 @@ def seleccionar_festival():
     opc_festival = ''
     opciones_validas = [str(i + 1) for i in range(len(festivales))]
 
+    if not(opciones_validas):
+        return 'No hay festivales \n----------------------------------------'
     while opc_festival not in opciones_validas:
         for i, festival in enumerate(festivales):
             print(f"{i + 1}. {festival.nombre}")
@@ -223,7 +225,7 @@ while True:
                             if 0<=horario_inicio<=23:
                                 break
                             else:
-                                print('Introduce una hora del día (entre 0 y 23')
+                                print('Introduce una hora del día (entre 0 y 23)')
                         except TypeError:
                             print('Por favor, introduzca un número')
                     while True:
@@ -232,7 +234,7 @@ while True:
                             if 0<=horario_inicio<=23:
                                 break
                             else:
-                                print('Introduce una hora del día (entre 0 y 23')
+                                print('Introduce una hora del día (entre 0 y 23)')
                         except TypeError:
                             print('Por favor, introduzca un número')
                     horario = f'{horario_inicio}:00 - {horario_fin}:00'
@@ -312,16 +314,60 @@ while True:
             pass
 
         case '13':
-            fecha_nacimiento = input('Fecha de nacimiento: ')
+
+            festival = seleccionar_festival()
+            while True:
+                try:
+                    anyo_nacimiento = int(input('Introduce tu año de nacimiento: '))
+                    if anyo_nacimiento <= 2025:
+                        break
+                    else:
+                        print('Introduce un año válido (2025 o antes)')
+                except TypeError:
+                    print('Por favor, introduzca un número')
+            while True:
+                try:
+                    mes_nacimiento = int(input('Introduce tu mes de nacimiento: '))
+                    if 1 <= mes_nacimiento <= 12:
+                        break
+                    else:
+                        print('Introduce un més válido (1-12)')
+                except TypeError:
+                    print('Por favor, introduzca un número')
+            while True:
+                try:
+                    dia_nacimiento = int(input('Introduce el dia del festival: '))
+                    dias_mes = calendar.monthrange(anyo_nacimiento, mes_nacimiento)[1]
+                    if 0 < dia_nacimiento <= dias_mes:
+                        break
+                    else:
+                        print(f'Número fuera del rango de dias, elija un dia del 1 al {dias_mes}')
+                except ValueError:
+                    print('Por favor, introduzca un número válido')
+            fecha_nacimiento = f'{dia_nacimiento}/{mes_nacimiento}/{anyo_nacimiento}'
             dni = input('Dni: ')
-            nombre = str(input('Nombre: '))
-            apellido1 = str(input('Apellido1: '))
-            apellido2 = str(input('Apellido2: '))
-            tipo_entrada = str(input('Tipo de entrada: '))
-            dinero_actual = float(input('Dinero con el que entra al festival: '))
+            nombre = input('Nombre: ')
+            apellido1 = input('Apellido1: ')
+            apellido2 = input('Apellido2: ')
+            while True:
+                try:
+                    tipo_entrada = str(input('Tipo de entrada (normal/VIP): '))
+                    if tipo_entrada != 'normal' or tipo_entrada !='VIP':
+                        print('Introduce un tipo de entrada válido')
+                    else:
+                        break
+                except TypeError:
+                    print('Por favor, introduce sólamente letras, los tipos de entrada son normal o VIP')
+
+            while True:
+                try:
+                    dinero_actual = float(input('Dinero con el que entra al festival: '))
+                    break
+                except TypeError:
+                    print('Dato incorrecto, introduce un número')
 
             r = requests.post(f'{URL}/data/anyadir_publico?fecha_nacimiento={fecha_nacimiento}&dni={dni}&nombre={nombre}\
-                             &apellido1={apellido1}&apellido2={apellido2}&tipo_entrada={tipo_entrada}&dinero_actual={dinero_actual}')
+                             &apellido1={apellido1}&apellido2={apellido2}&tipo_entrada={tipo_entrada}&dinero_actual={dinero_actual}&festival={festival}')
 
             print(f'{r.text} ({r.status_code})')
 

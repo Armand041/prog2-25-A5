@@ -517,9 +517,10 @@ def anyadir_publico():
    apellido2  = request.args.get('apellido2', '')
    tipo_entrada  = request.args.get('tipo_entrada', '')
    dinero_actual = request.args.get('dinero_actual', '')
+   festival=request.args.get('festival', '')
 
 
-   datos = [fecha_nacimiento,dni,nombre,apellido1,tipo_entrada,dinero_actual,apellido2]
+   datos = [fecha_nacimiento,dni,nombre,apellido1,tipo_entrada,dinero_actual,apellido2, festival]
 
 
    try:
