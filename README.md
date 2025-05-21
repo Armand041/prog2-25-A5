@@ -26,15 +26,9 @@ Este proyecto busca simplificar el almacenamiento y estructuración de festivale
 
 - Relación de Servicios/Festival y Artista/Festival: David Díez Pérez 
 
-- Permitirá acceder a canciones populares de los artistas (API de Spotify o Youtube): Daniel Paredes Valverde 
+- Permitirá acceder a canciones populares de los artistas (API de Spotify o Youtube): Daniel Paredes Valverde
 
-- Permitirá descargar un PDF con la información del usuario asistente al evento: Maria Ripoll Gomis 
-
-- Acceder a Redes Sociales de los artistas (API Instagram, TikTok): Daniel Paredes Valverde 
-
-- Permitirá descargar un cartel con información del festival: Pablo Serna Soriano 
-
-- Base de datos con la información de los eventos: Raúl Uclés Lajara
+- Acceder a Redes Sociales de los artistas (API Instagram, TikTok): Daniel Paredes Valverde
 
 - Clase Persona, Publico y relaciones Trabajador/Trabajo: Daniel Paredes Valverde 
 
@@ -154,6 +148,14 @@ Este proyecto busca simplificar el almacenamiento y estructuración de festivale
     - No requiere JWT
 
     - Parámetros: nombres_trabajadores, dni_trabajadores
+
+- Mostrar_datos_atendiente
+    
+    - GET
+
+    - No requiere JWT
+
+    - Parámetros: nombre, dni
 
 
 ### SERVICIOS 
