@@ -156,6 +156,21 @@ def get_datos_festival():
 @app.route('/data', methods=['POST'])
 @jwt_required()
 def crear_festival():
+    """
+    Crea un nuevo festival y lo guarda en el archivo informacion_festivales.csv.
+
+    Esta función requiere autenticación JWT. Obtiene todos los datos del festival
+    desde los argumentos de la petición (request.args): nombre, fecha, lugar,
+    aforo y coste. Verifica si el festival ya existe en el archivo y, si no
+    existe, lo añade.  Si el archivo no existe, se devuelve un error.
+
+   Returns
+    --------
+        Un par (respuesta, código de estado):
+        - Mensaje de éxito y código 200 si el festival fue creado correctamente.
+        - Mensaje de error y código 409 si el festival ya existe.
+        - Mensaje de error y código 404 si el archivo `informacion_festivales.csv` no se encuentra.
+    """
     datos=[]
     nombre = request.args.get('nombre', '')
     fecha = request.args.get('fecha', '')
@@ -180,6 +195,18 @@ def crear_festival():
 @app.route('/data', methods=['PUT'])
 @jwt_required()
 def modificar_festival():
+    """
+    Modifica los datos de un festival existente.
+
+    Esta función requiere autenticación JWT. Recibe los parámetros desde los argumentos
+    de la petición (request.args) y actualiza los campos correspondientes del festival.
+    También utiliza un archivo auxiliar (inf_festivales_aux.csv) para reescribir la
+    información de forma segura.
+
+    Se modifica la fecha, el lugar, el aforo, el coste, los atendientes,
+    los servicios y artistas invitados.
+
+    """
     nombre = request.args.get('nombre', '')
     servicio = request.args.get('servicio', '')
     artista = request.args.get('artista', '')
@@ -247,10 +274,24 @@ def modificar_festival():
             for row in reader:
                 writer.writerow(row)
 
-
 @app.route('/data', methods=['DELETE'])
 @jwt_required()
 def eliminar_festival():
+    """
+    Elimina un festival del archivo informacion_festivales.csv.
+
+   Esta función requiere autenticación JWT. El nombre del festival a eliminar
+    se recibe como parámetro desde los argumentos de la petición (request.args).
+    Si el festival existe en el archivo informacion_festivales.csv, lo elimina, y si
+    el festival no se encuentra, devuelve un error. En caso de que no exista el archivo
+    CSV, también se devuelve un mensaje de error
+
+    Returns
+    -------
+        Un par (respuesta, código de estado):
+        - Mensaje de éxito y código 200 si el festival fue eliminado correctamente.
+        - Mensaje de error y código 404 si el festival no fue encontrado o si el archivo no existe.
+    """
     datos_nuevos=[]
     festi_found=False
     festival = request.args.get('festival', '')
@@ -271,10 +312,22 @@ def eliminar_festival():
         writer.writerows(datos_nuevos)
         return f'El festival {festival} fue eliminado correctamente', 200
 
-
 #Notar que devuelve una lista
 @app.route('/data_nombres', methods=['GET'])
 def mostrar_festivales():
+    """
+    Obtiene una lista con los nombres de todos los festivales registrados.
+
+    Lee el archivo informacion_festivales.csv y extrae únicamente los nombres de los
+    festivales. Devuelve una lista de nombres en formato JSON junto con el código de
+    estado 200. En caso de que el archivo no exista, devuelve un mensaje de error.
+
+    Returns
+    -------
+        Un par (respuesta, código de estado):
+        - Se devuelve una lista con los festivales y código 200 si se ejecutó correctamente.
+        - Mensaje de error y código 404 si no se encuentra el archivo.
+    """
     nombres_festi = []
     contador = 0
     try:
@@ -289,9 +342,19 @@ def mostrar_festivales():
         return 'No encontrado el archivo con los festivales', 404
     return nombres_festi, 200
 
-
 @app.route('/data/artistas', methods=['GET'])
 def datos_artista():
+    """
+    Obtiene los datos de un artista específico.
+
+    Recibe el nombre del artista como parámetro desde los argumentos
+    de la petición (request.args) y crea un objeto Artista con ese nombre. Este objeto se
+    instancia con valores por defecto para los demás atributos.
+
+    Returns
+    -------
+        Un par (datos del artista, código de estado 200).
+    """
     artista = request.args.get('artista', '')
     datos=Artista('','',artista,0,'')
     # en main llamamos a las funciones de mostrar los datos, 'datos' es un objeto de la clase artista
@@ -300,6 +363,21 @@ def datos_artista():
 @app.route('/data/servicio', methods=['POST'])
 @jwt_required()
 def anyadir_servicio():
+    """
+    Añade un nuevo servicio a un festival existente.
+
+    Esta función recibe mediante desde los argumentos de la petición (request.args) la
+    información del servicio a añadir, así como el nombre del festival al que se asociará.
+    Si el festival existe, se actualiza su lista de servicios y se almacena también
+    el nuevo servicio en el fichero Servicios.csv.
+
+    Returns
+    -------
+        Un par (respuesta, código de estado):
+        - Mensaje de éxito y código 200 si los datos se añadieron correctamente al festival y al fichero de servicios.
+        - Mensaje de error y código 404 si el festival no se encuentra.
+        - Mensaje de error y código 404 si el archivo de festivales no se encuentra.
+    """
     datos_festi=[]
     datos_servicios=[]
     nombre_festi = request.args.get('festival', '')
@@ -340,6 +418,19 @@ def anyadir_servicio():
 
 @app.route('/data_nombres/servicios', methods=['GET'])
 def mostrar_servicios():
+    """
+    Devuelve una lista con los nombres de todos los servicios registrados.
+
+    Esta función abre el archivo Servicios.csvn y extrae el nombre de cada servicio,
+    el cual se asume que se encuentra en la primera columna. La lista resultante
+    se devuelve al cliente.
+
+    Returns
+    -------
+        Un par (respuesta, código de estado):
+        - Lista con los nombres de los servicios y código 200 si se lee correctamente el archivo.
+        - Mensaje de error y código 404 si el archivo Servicios.csv no se encuentra.
+    """
     nombres_servi=[]
     contador=0
     try:
@@ -356,6 +447,18 @@ def mostrar_servicios():
 
 @app.route('/data/trabajadores', methods=['GET'])
 def mostrar_trabajadores():
+    """
+    Devuelve una lista con los nombres y DNI de todos los trabajadores registrados.
+
+    Esta función abre el archivo staff.csv,y extrae los nombres y DNI de cada trabajador.
+    Devuelve una cadena con ambas listas concatenadas de forma legible.
+
+    Returns
+    -------
+        Un par (respuesta, código de estado):
+        - Mensaje con los nombres y DNI de los trabajadores y código 200 si se lee correctamente el archivo.
+        - Mensaje de error y código 404 si el archivo staff.csv no se encuentra.
+    """
     nombres_trabajadores=[]
     dni_trabajadores=[]
     contador=0
@@ -371,8 +474,23 @@ def mostrar_trabajadores():
     except FileNotFoundError:
         return 'No encontrado el archivo con los festivales', 404
     return f'Trabajan las personas: {nombres_trabajadores} con dni: {dni_trabajadores} ', 200
+
 @app.route('/data/publico', methods=['GET'])
 def mostrar_publico():
+    """
+    Devuelve una lista con los nombres y DNI de todas las personas del público.
+
+    Esta función abre el archivo publico.csv, y extrae los nombres y DNI de cada
+    persona registrada como público. Devuelve una cadena con ambas listas concatenadas
+    de forma legible.
+
+    Returns
+    -------
+    Tuple[str, int]
+        Un par (respuesta, código de estado):
+        - Mensaje con los nombres y DNI del público y código 200 si se lee correctamente el archivo.
+        - Mensaje de error y código 404 si el archivo publico.csv no se encuentra.
+    """
     nombres_publico=[]
     dni_publico=[]
     contador=0
@@ -388,7 +506,6 @@ def mostrar_publico():
     except FileNotFoundError:
         return 'No encontrado el archivo con los festivales', 404
     return f'Son publico las personas: {nombres_publico} con dni: {dni_publico} ', 200
-
 
 
 if __name__ == '__main__':
