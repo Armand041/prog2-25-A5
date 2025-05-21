@@ -327,8 +327,11 @@ while True:
 
 
         case '13':
-
-            festival = seleccionar_festival().nombre
+            try:
+                festival = seleccionar_festival().nombre
+            except AttributeError:
+                print('No hay festivales')
+                continue # vuelve al menú
 
             while True:
                 try:
