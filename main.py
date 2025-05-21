@@ -72,7 +72,7 @@ def seleccionar_trabajador_de_servicio(servicio):
 
 while True:
     opcion = ''
-    opciones = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13']
+    opciones = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13','14']
 
     while opcion not in opciones:
         # Pueden haber más o menos opciones esto es un ejemplo y primera idea
@@ -89,7 +89,8 @@ while True:
         print('11. Mostrar datos de un artista')# Aquí hacemos tambien que te muestre lo de la api que está en la clase artista
         # podemos añadir tambien que muestre los artistas disponibles
         print('12. Mostrar datos de un atendiente')
-        print('13. Terminar')
+        print('13. Anyadir publico')
+        print('14. Terminar')
         opcion = input('Introduce una de las opciones (por número): ')
 
     match opcion:
@@ -309,6 +310,21 @@ while True:
         case '12':
             r = requests.get(f'{URL}/data/publico')
             pass
+
         case '13':
+            fecha_nacimiento = input('Fecha de nacimiento: ')
+            dni = input('Dni: ')
+            nombre = str(input('Nombre: '))
+            apellido1 = str(input('Apellido1: '))
+            apellido2 = str(input('Apellido2: '))
+            tipo_entrada = str(input('Tipo de entrada: '))
+            dinero_actual = float(input('Dinero con el que entra al festival: '))
+
+            r = requests.post(f'{URL}/data/anyadir_publico?fecha_nacimiento={fecha_nacimiento}&dni={dni}&nombre={nombre}\
+                             &apellido1={apellido1}&apellido2={apellido2}&tipo_entrada={tipo_entrada}&dinero_actual={dinero_actual}')
+
+            print(f'{r.text} ({r.status_code})')
+
+        case '14':
             print('Cerrando programa)')
             break
