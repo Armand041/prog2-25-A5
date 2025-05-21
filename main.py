@@ -88,7 +88,7 @@ while True:
         print('10. Mostrar datos de un trabajador')
         print('11. Mostrar datos de un artista')# Aquí hacemos tambien que te muestre lo de la api que está en la clase artista
         # podemos añadir tambien que muestre los artistas disponibles
-        print('12. Mostrar datos de un atendiente')
+        print('12. Mostrar publico')
         print('13. Anyadir publico')
         print('14. Terminar')
         opcion = input('Introduce una de las opciones (por número): ')
@@ -309,21 +309,20 @@ while True:
             pass
         case '12':
             r = requests.get(f'{URL}/data/publico')
-            pass
+            print(f'{r.text} ({r.status_code})')
 
         case '13':
             fecha_nacimiento = input('Fecha de nacimiento: ')
-            dni = input('Dni: ')
-            nombre = str(input('Nombre: '))
-            apellido1 = str(input('Apellido1: '))
-            apellido2 = str(input('Apellido2: '))
-            tipo_entrada = str(input('Tipo de entrada: '))
+            dni = input('Dni: ').strip()
+            nombre = str(input('Nombre: ')).strip()
+            apellido1 = str(input('Apellido1: ')).strip()
+            apellido2 = str(input('Apellido2: ')).strip()
+            tipo_entrada = str(input('Tipo de entrada: ')).strip()
             dinero_actual = float(input('Dinero con el que entra al festival: '))
 
-            r = requests.post(f'{URL}/data/anyadir_publico?fecha_nacimiento={fecha_nacimiento}&dni={dni}&nombre={nombre}\
-                             &apellido1={apellido1}&apellido2={apellido2}&tipo_entrada={tipo_entrada}&dinero_actual={dinero_actual}')
+            r = requests.post(f'{URL}/data/anyadir_publico?fecha_nacimiento={fecha_nacimiento}&dni={dni}&nombre={nombre}&apellido1={apellido1}&apellido2={apellido2}&tipo_entrada={tipo_entrada}&dinero_actual={dinero_actual}')
 
-            print(f'{r.text} ({r.status_code})')
+            print(f'{r.text}, ({r.status_code})')
 
         case '14':
             print('Cerrando programa)')
