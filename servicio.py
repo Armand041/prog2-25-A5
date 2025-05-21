@@ -70,7 +70,7 @@ class Servicio(ABC):
 
 
 class Comida(Servicio):
-    def __init__(self, nombre: str, horario: str, alquiler: float, lugar: str, trabajadores: list[str]):
+    def __init__(self, nombre: str, horario: str, alquiler: float, lugar: str, trabajadores: list[Staff]):
         super().__init__(nombre, horario, alquiler, lugar, trabajadores)
 
     def obtener_informacion(self):
@@ -79,7 +79,7 @@ class Comida(Servicio):
 
 
 class Bebida(Servicio):
-    def __init__(self, nombre: str, horario: str, alquiler: float, lugar: str, trabajadores: list[str]):
+    def __init__(self, nombre: str, horario: str, alquiler: float, lugar: str, trabajadores: list[Staff]):
         super().__init__(nombre, horario, alquiler, lugar, trabajadores)
 
     def obtener_informacion(self):
@@ -88,7 +88,7 @@ class Bebida(Servicio):
         return f'Este puesto de bebidas ofrece bebidas con alcohol: {bebidas_con_alcohol} y sin alcohol: {bebidas_sin_alcohol}'
 
 class Tattoo(Servicio):
-    def __init__(self, nombre: str, horario: str, alquiler: float, lugar: str, trabajadores: list[str]):
+    def __init__(self, nombre: str, horario: str, alquiler: float, lugar: str, trabajadores: list[Staff]):
         super().__init__(nombre, horario, alquiler, lugar, trabajadores)
 
     def obtener_informacion(self):
@@ -96,7 +96,7 @@ class Tattoo(Servicio):
         return f'Este puesto de tatuajes ofrece los siguientes precios dependiendo del tamaño: {tattoo}'
 
 class Merch(Servicio):
-    def __init__(self, nombre: str, horario: str, alquiler: float, lugar: str, trabajadores: list[str]):
+    def __init__(self, nombre: str, horario: str, alquiler: float, lugar: str, trabajadores: list[Staff]):
         super().__init__(nombre, horario, alquiler, lugar, trabajadores)
 
     def obtener_informacion(self):
@@ -104,14 +104,14 @@ class Merch(Servicio):
         return f'Este puesto de merchandising ofrece: {merch}'
 
 class SonidoLuces(Servicio):
-    def __init__(self, nombre: str, horario: str, alquiler: float, lugar: str, trabajadores: list[str]):
+    def __init__(self, nombre: str, horario: str, alquiler: float, lugar: str, trabajadores: list[Staff]):
         super().__init__(nombre, horario, alquiler, lugar, trabajadores)
 
     def obtener_informacion(self):
         return 'Este puesto no ofrece ningún prodcuto al público si no que consta de una serie de trabajadores que gestionan las luces y el sonido empleado en el festival controlandoq que todo funcione correctamente'
 
 class EntradasSeguridad(Servicio):
-    def __init__(self, nombre: str, horario: str, alquiler: float, lugar: str, trabajadores: list[str]):
+    def __init__(self, nombre: str, horario: str, alquiler: float, lugar: str, trabajadores: list[Staff]):
         super().__init__(nombre, horario, alquiler, lugar, trabajadores)
 
     def obtener_informacion(self):

@@ -49,6 +49,8 @@ def seleccionar_servicio_de_festival(festival):
     opc_servicio = ''
     opciones_validas = [str(i + 1) for i in range(len(festival.servicios))]
 
+    if not(opciones_validas):
+        return 'Este festival no tiene servicios \n----------------------------------------'
     while opc_servicio not in opciones_validas:
         for i, servicio in enumerate(festival.servicios):
             print(f"{i + 1}. {servicio.nombre}")
@@ -214,9 +216,27 @@ while True:
                         opcion_puesto = input('Introduce una de las opciones (por número): ')
 
                     nombre = input('Introduce el nombre del servicio: ')
-                    horario = input('Introduce el horario del servicio: ')
+                    while True:
+                        try:
+                            horario_inicio=int(input('Introduce la hora de inicio de la jornada: '))
+                            if 0<=horario_inicio<=23:
+                                break
+                            else:
+                                print('Introduce una hora del día (entre 0 y 23')
+                        except TypeError:
+                            print('Por favor, introduzca un número')
+                    while True:
+                        try:
+                            horario_fin=int(input('Introduce la hora de terminar la jornada: '))
+                            if 0<=horario_inicio<=23:
+                                break
+                            else:
+                                print('Introduce una hora del día (entre 0 y 23')
+                        except TypeError:
+                            print('Por favor, introduzca un número')
+                    horario = f'{horario_inicio}:00 - {horario_fin}:00'
                     alquiler = float(input('Introduce el costo del alquiler del servicio: '))
-                    lugar  = input('Introduce el lugar donde se encuentra el puesto: ')
+                    lugar  = input('Introduce el lugar donde se encuentra el puesto dentro del festival: ')
 
                     if opcion_puesto == '1':
                         comida1 = Comida(nombre, horario, alquiler, lugar, [])
