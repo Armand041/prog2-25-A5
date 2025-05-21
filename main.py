@@ -311,6 +311,7 @@ while True:
             pass
         case '12':
             r = requests.get(f'{URL}/data/publico')
+            print(f'{r.text}, {r.status_code}')
             pass
 
         case '13':
@@ -352,10 +353,10 @@ while True:
             while True:
                 try:
                     tipo_entrada = str(input('Tipo de entrada (normal/VIP): '))
-                    if tipo_entrada != 'normal' or tipo_entrada !='VIP':
-                        print('Introduce un tipo de entrada válido')
-                    else:
+                    if tipo_entrada == 'normal' or tipo_entrada =='VIP':
                         break
+                    else:
+                        print('Introduce un tipo de entrada válido')
                 except TypeError:
                     print('Por favor, introduce sólamente letras, los tipos de entrada son normal o VIP')
 
@@ -366,8 +367,7 @@ while True:
                 except TypeError:
                     print('Dato incorrecto, introduce un número')
 
-            r = requests.post(f'{URL}/data/anyadir_publico?fecha_nacimiento={fecha_nacimiento}&dni={dni}&nombre={nombre}\
-                             &apellido1={apellido1}&apellido2={apellido2}&tipo_entrada={tipo_entrada}&dinero_actual={dinero_actual}&festival={festival}')
+            r = requests.post(f'{URL}/data/anyadir_publico?fecha_nacimiento={fecha_nacimiento}&dni={dni}&nombre={nombre}&apellido1={apellido1}&apellido2={apellido2}&tipo_entrada={tipo_entrada}&dinero_actual={dinero_actual}&festival={festival}')
 
             print(f'{r.text} ({r.status_code})')
 
