@@ -325,7 +325,7 @@ while True:
 
         case '13':
 
-            festival = seleccionar_festival()
+            festival = seleccionar_festival().nombre
 
             while True:
                 try:
