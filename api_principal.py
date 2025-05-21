@@ -486,7 +486,6 @@ def mostrar_publico():
 
     Returns
     -------
-    Tuple[str, int]
         Un par (respuesta, código de estado):
         - Mensaje con los nombres y DNI del público y código 200 si se lee correctamente el archivo.
         - Mensaje de error y código 404 si el archivo publico.csv no se encuentra.
