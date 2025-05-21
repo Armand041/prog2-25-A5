@@ -10,6 +10,7 @@ Permite que estos datos se guarden en ficheros para que tengan permanencia.
 import csv
 import requests
 import calendar
+from datetime import datetime
 from festival import Festival
 from publico import Publico
 from Personal.artista import Artista
@@ -72,6 +73,13 @@ def seleccionar_trabajador_de_servicio(servicio):
 
     return servicio.trabajadores[int(opc_trabajador) - 1]
 
+def log_adder(accion: str, status: str, usuario: str) -> None:
+    with open('log.csv', 'a') as csv_file:
+        adder = csv.DictWriter(csv_file,fieldnames=['Accion', 'Status_Code', 'Usuario', 'Fecha'])
+        now = datetime.now()
+        adder.writerow({'Accion': accion, 'Status_Code': status, 'Usuario': usuario, 'Fecha': f'{now.hour}:{now.minute}-{now.day}/{now.month}/{now.year}'})
+
+usuario_actual = 'Usuario invitado' # Evitar errores al crear log
 while True:
     opcion = ''
     opciones = [str(num) for num in range(1, 2011)]
@@ -105,6 +113,7 @@ while True:
             r = requests.post(f'{URL}/signup?user={usuario}&password={password}')
             if r.status_code == 200:
                 print(f'Usuario {usuario} creado correctamente. \n----------------------------------------')
+            log_adder(f'Registrado usuario: {usuario}',r.status_code,usuario_actual)
             else:
                 print(f'Error al crear usuario: {r.status_code} - {r.text}. \n----------------------------------------')
 
@@ -115,6 +124,7 @@ while True:
             if r.status_code == 200:
                 token = r.text
                 print('Inicio de sesión correcto. \n----------------------------------------')
+                usuario_actual = usuario # Marca la sesión actual -> log
             else:
                 print('Error al iniciar sesión:', r.text, '\n----------------------------------------')
 
@@ -177,6 +187,7 @@ while True:
                 if r.status_code == 200:
                     nuevo_festival = Festival(nombre_fest, fecha_fest, lugar_fest, aforo_fest, coste_fest)
                     festivales.append(nuevo_festival)
+                log_adder(f'Añadir festival: {nombre_fest}', r.status_code, usuario_actual)
             except NameError:
                 print('No has iniciado sesión, no puedes realizar esta función. \n----------------------------------------1')
 
@@ -193,6 +204,7 @@ while True:
                     print(r.text + ' (' + str(r.status_code) + ')')
                     if r.status_code == 200:
                         festivales.remove(festival_a_eliminar)
+                    log_adder(f'Eliminar festival: {festival_a_eliminar}', r.status_code, usuario_actual)
                 except NameError:
                     print('No has iniciado sesión, no puedes realizar esta función. \n----------------------------------------1')
 
@@ -292,6 +304,7 @@ while True:
                     servicio_introducir_trabjador.contratar_trabajador(trabajador)
                     r = requests.put(f'{URL}/data?nombre={festival}&artista={nombre}')
                     print(f'{r.text} ({r.status_code})')
+                    log_adder(f'Modificar festival: {festival}', r.status_code, usuario_actual)
 
         case '7':
             r = requests.get(f'{URL}/data_nombres')
@@ -320,22 +333,29 @@ while True:
             r = requests.get(f'{URL}/data/artistas?artista={artista}')
             print(f'{r.text}')
 
-
-
         case '12':
             r = requests.get(f'{URL}/data/artistas?artista=')
             print(f'{r.text}')
 
         case '13':
-            artista = input('Introduce el artista del que quieras añadir: ').lower()
-            link = input('Introduce el link de spotify del artista: ')
-            r = requests.put(f'{URL}/data/artistas?artista={artista}&link={link}')
-            print(r.text)
+            try:
+                artista = input('Introduce el artista del que quieras añadir: ').lower()
+                link = input('Introduce el link de spotify del artista: ')
+                r = requests.put(f'{URL}/data/artistas?artista={artista}&link={link}')
+                print(r.text)
+                log_adder(f'Añadir artista: {artista}', r.status_code, usuario_actual)
+            except NameError:
+                print('No has iniciado sesión, no puedes realizar esta función. \n----------------------------------------1')
 
         case '14':
-            artista = input('Introduce el artista al que quieras eliminar: ').lower()
-            r = requests.delete(f'{URL}/data/artistas?artista={artista}')
-            print(r.text)
+            try:
+                artista = input('Introduce el artista al que quieras eliminar: ').lower()
+                r = requests.delete(f'{URL}/data/artistas?artista={artista}')
+                print(r.text)
+                log_adder(f'Eliminar artista: {artista}', r.status_code, usuario_actual)
+            except NameError:
+                print('No has iniciado sesión, no puedes realizar esta función. \n----------------------------------------1')
+
 
         case '15':
             r = requests.get(f'{URL}/data/publico')
@@ -345,6 +365,7 @@ while True:
         case '16':
             try:
                 festival = seleccionar_festival().nombre
+                log_adder(f'Añadir publico en: {festival}', None, usuario_actual)
             except AttributeError or TypeError:
                 print('No hay festival')
                 continue
@@ -421,6 +442,7 @@ while True:
             dni = input('Introduce el dni del atendiente a eliminar: ')
             r = requests.delete(f'{URL}/data/eliminar_publico?dni={dni}')
             print(f'{r.text}, {r.status_code}')
+            log_adder(f'Eliminar público: {dni}', r.status_code, usuario_actual)
         case '19':
             print('Cerrando programa)')
             break
