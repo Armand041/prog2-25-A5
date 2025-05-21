@@ -74,6 +74,20 @@ def seleccionar_trabajador_de_servicio(servicio):
     return servicio.trabajadores[int(opc_trabajador) - 1]
 
 def log_adder(accion: str, status: str, usuario: str) -> None:
+    '''
+    Añade a log.csv un cambio reciente.
+
+    Parametros:
+    --------------
+    accion: str
+        Accion representa la accion hecha, modificar, eliminar, crear....
+
+    status: str
+        Status de la accion realizada
+
+    usuario: str
+        Usuario que realiza la accion
+    '''
     with open('log.csv', 'a') as csv_file:
         adder = csv.DictWriter(csv_file,fieldnames=['Accion', 'Status_Code', 'Usuario', 'Fecha'])
         now = datetime.now()
