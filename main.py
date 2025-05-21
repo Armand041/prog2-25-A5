@@ -74,10 +74,9 @@ def seleccionar_trabajador_de_servicio(servicio):
 
 while True:
     opcion = ''
-    opciones = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13','14','15','16','17']
+    opciones = [str(num) for num in range(1, 2011)]
 
     while opcion not in opciones:
-        # Pueden haber más o menos opciones esto es un ejemplo y primera idea
         print('1. Registrar usuario')
         print('2. Iniciar sesión')
         print('3. Eliminar usuario')
@@ -90,11 +89,13 @@ while True:
         print('10. Mostrar datos de un trabajador')
         print('11. Mostrar datos de un artista')
         print('12. Mostrar todos los artistas')
-        print('13. Mostrar atendientes')
-        print('14. Anyadir publico')
-        print('15. Mostrar datos atendiente')
-        print('16. Eliminar atendiente')
-        print('17. Terminar')
+        print('13. Anyadir artista')
+        print('14. Eliminar artista')
+        print('15. Mostrar atendientes')
+        print('16. Anyadir publico')
+        print('17. Mostrar datos atendiente')
+        print('18. Eliminar atendiente')
+        print('19. Terminar')
         opcion = input('Introduce una de las opciones (por número): ')
 
     match opcion:
@@ -317,20 +318,31 @@ while True:
         case '11':
             artista = input('Introduce el artista del que quieras recoger la información: ').lower()
             r = requests.get(f'{URL}/data/artistas?artista={artista}')
-            print(f'{r.text} \n(Status: {r.status_code})')
+            print(f'{r.text}')
 
 
 
         case '12':
             r = requests.get(f'{URL}/data/artistas?artista=')
-            print(f'{r.text} \n(Statues: {r.status_code})')
+            print(f'{r.text}')
 
         case '13':
+            artista = input('Introduce el artista del que quieras añadir: ').lower()
+            link = input('Introduce el link de spotify del artista: ')
+            r = requests.put(f'{URL}/data/artistas?artista={artista}&link={link}')
+            print(r.text)
+
+        case '14':
+            artista = input('Introduce el artista al que quieras eliminar: ').lower()
+            r = requests.delete(f'{URL}/data/artistas?artista={artista}')
+            print(r.text)
+
+        case '15':
             r = requests.get(f'{URL}/data/publico')
             print(r.text)
 
 
-        case '14':
+        case '16':
             try:
                 festival = seleccionar_festival().nombre
             except AttributeError or TypeError:
@@ -399,16 +411,16 @@ while True:
 
             print(f'{r.text} ({r.status_code})')
 
-        case '15':
+        case '17':
             nombre=input('Introduce el nombre del usuario: ')
             dni=input('Introduce su dni: ')
             r = requests.get(f'{URL}/data/publico_data?nombre={nombre}&dni={dni}')
             print(r.text)
 
-        case '16':
+        case '18':
             dni = input('Introduce el dni del atendiente a eliminar: ')
             r = requests.delete(f'{URL}/data/eliminar_publico?dni={dni}')
             print(f'{r.text}, {r.status_code}')
-        case '17':
+        case '19':
             print('Cerrando programa)')
             break

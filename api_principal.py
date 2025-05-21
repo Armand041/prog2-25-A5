@@ -8,6 +8,7 @@ from Personal.persona import Persona
 from Personal.staff import Staff
 import csv
 import ast # para pasar str de listas a lista y manejarlo
+from almacenamiento_artista import anadir_artista, eliminar_artista
 
 app = Flask(__name__)
 app.config['JWT_SECRET_KEY']='$ecret0 dE_verdAd*'
@@ -356,17 +357,71 @@ def datos_artista():
         Un par (datos del artista, código de estado 200 si todo ha salido correctamente, 404 si no encuentra al artista).
     """
     artista = request.args.get('artista', '')
+
+    # Todos los artistas
     if artista == '':
         with open('artistas_disponibles.csv', 'r') as csv_file:
             reader = csv.DictReader(csv_file)
             return 'Artista --- Link\n'+'\n'.join([f'{row['nombre'].capitalize()} -> https://open.spotify.com/artist/{row['link']}' for row in reader]), 200
+
+    # Un artisata en especifico
     else:
-        artista = ''.join(artista.split('%20'))
+        artista = ' '.join(artista.split('%20')) # Separamos el nombre del artista
         datos=Artista('','',artista,0,'')
         if datos.mostrar_canciones_populares() == 'Artista no encontrado':
             return f'{artista} no se encuentra entre los artistas disponibles', 404
         else:
             return datos.__str__(), 200
+
+
+@app.route('/data/artistas', methods=['PUT'])
+@jwt_required()
+def anyadir_artista():
+    """
+    Añadimos un artista al csv de artistas_disponibles. Solo permitido con jwt
+
+    Lee el archivo artistas_disponibles.csv y comprueba que el artista no este añadido ya.
+    Si el artista ya esta añadido devuelve error 418. En caso contrario añade al artista junto
+    a su link de spotify.
+
+    Returns
+    -------
+        Un par (respuesta, código de estado):
+        - Mensaje correcto y código 200 si todo sale bien.
+        - Mensaje de error y código 418 si ya está añadido.
+    """
+    artista = request.args.get('artista', '')
+    artista = ' '.join(artista.split('%20')) # Separamos el nombre del artista
+    link = request.args.get('link', '')
+
+    result = anadir_artista(artista, link)
+    status = 200 if result != f'Artista {artista} ya ha sido añadido previamente' else 418
+
+    return result, status
+
+
+@app.route('/data/artistas', methods=['DELETE'])
+@jwt_required()
+def quitar_artista():
+    """
+    Eliminamos un artista al csv de artistas_disponibles. Solo permitido con jwt
+
+    Lee el archivo artistas_disponibles.csv y comprueba que el artista exista.
+    Si el artista no existe devuelve error 418. En caso contrario elimina al artista
+
+    Returns
+    -------
+        Un par (respuesta, código de estado):
+        - Mensaje correcto y código 200 si todo sale bien.
+        - Mensaje de error y código 418 si no existe.
+    """
+    artista = request.args.get('artista', '')
+    artista = ' '.join(artista.split('%20')) # Separamos el nombre del artista
+
+    result = eliminar_artista(artista)
+    status = 200 if result != f'Artista {artista} no encontrado entre los artistas disponibles.' else 418
+
+    return result, status
 
 @app.route('/data/servicio', methods=['POST'])
 @jwt_required()
