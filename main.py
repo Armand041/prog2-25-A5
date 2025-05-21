@@ -315,9 +315,12 @@ while True:
             trabajador = seleccionar_trabajador_de_servicio(servicio)
             print(trabajador)
         case '11':
+            artista = input('Introduce el artista del que quieras recoger la información: ').lower()
+            r = requests.get(f'{URL}/data/artistas?artista={artista}')
+            print(f'{r.text} \n(Status: {r.status_code})')
 
 
-            pass
+
         case '12':
             r = requests.get(f'{URL}/data/publico')
             print(r.text)
