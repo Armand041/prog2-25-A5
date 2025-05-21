@@ -363,7 +363,7 @@ def datos_artista():
     else:
         artista = ''.join(artista.split('%20'))
         datos=Artista('','',artista,0,'')
-        if datos.mostrar_canciones_populares() == ['Artista no encontrado']:
+        if datos.mostrar_canciones_populares() == 'Artista no encontrado':
             return f'{artista} no se encuentra entre los artistas disponibles', 404
         else:
             return datos.__str__(), 200

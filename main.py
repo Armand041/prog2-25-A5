@@ -322,16 +322,17 @@ while True:
 
 
         case '12':
+            r = requests.get(f'{URL}/data/artistas?artista=')
+            print(f'{r.text} \n(Statues: {r.status_code})')
+
+        case '13':
             r = requests.get(f'{URL}/data/publico')
             print(r.text)
 
 
-        case '13':
-            try:
-                festival = seleccionar_festival().nombre
-            except AttributeError:
-                print('No hay festivales')
-                continue # vuelve al menú
+        case '14':
+
+            festival = seleccionar_festival()
 
             while True:
                 try:
@@ -395,16 +396,16 @@ while True:
 
             print(f'{r.text} ({r.status_code})')
 
-        case '14':
+        case '15':
             nombre=input('Introduce el nombre del usuario: ')
             dni=input('Introduce su dni: ')
             r = requests.get(f'{URL}/data/publico_data?nombre={nombre}&dni={dni}')
             print(r.text)
 
-        case '15':
+        case '16':
             dni = input('Introduce el dni del atendiente a eliminar: ')
             r = requests.delete(f'{URL}/data/eliminar_publico?dni={dni}')
             print(f'{r.text}, {r.status_code}')
-        case '16':
+        case '17':
             print('Cerrando programa)')
             break
