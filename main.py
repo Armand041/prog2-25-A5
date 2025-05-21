@@ -90,9 +90,10 @@ while True:
         print('10. Mostrar datos de un trabajador')
         print('11. Mostrar datos de un artista')# Aquí hacemos tambien que te muestre lo de la api que está en la clase artista
         # podemos añadir tambien que muestre los artistas disponibles
-        print('12. Mostrar datos de un atendiente')
+        print('12. Mostrar atendientes')
         print('13. Anyadir publico')
-        print('14. Terminar')
+        print('14. Mostrar datos atendiente')
+        print('15. Terminar')
         opcion = input('Introduce una de las opciones (por número): ')
 
     match opcion:
@@ -311,11 +312,13 @@ while True:
             pass
         case '12':
             r = requests.get(f'{URL}/data/publico')
-            pass
+            print(r.text)
+
 
         case '13':
 
-            festival = seleccionar_festival()
+            festival =seleccionar_festival().nombre
+
             while True:
                 try:
                     anyo_nacimiento = int(input('Introduce tu año de nacimiento: '))
@@ -336,7 +339,7 @@ while True:
                     print('Por favor, introduzca un número')
             while True:
                 try:
-                    dia_nacimiento = int(input('Introduce el dia del festival: '))
+                    dia_nacimiento = int(input('Introduce tu día de nacimiento: '))
                     dias_mes = calendar.monthrange(anyo_nacimiento, mes_nacimiento)[1]
                     if 0 < dia_nacimiento <= dias_mes:
                         break
@@ -352,7 +355,7 @@ while True:
             while True:
                 try:
                     tipo_entrada = str(input('Tipo de entrada (normal/VIP): '))
-                    if tipo_entrada != 'normal' or tipo_entrada !='VIP':
+                    if tipo_entrada != 'normal' and tipo_entrada !='VIP':
                         print('Introduce un tipo de entrada válido')
                     else:
                         break
@@ -366,11 +369,16 @@ while True:
                 except TypeError:
                     print('Dato incorrecto, introduce un número')
 
-            r = requests.post(f'{URL}/data/anyadir_publico?fecha_nacimiento={fecha_nacimiento}&dni={dni}&nombre={nombre}\
-                             &apellido1={apellido1}&apellido2={apellido2}&tipo_entrada={tipo_entrada}&dinero_actual={dinero_actual}&festival={festival}')
+            r = requests.post(f'{URL}/data/anyadir_publico?fecha_nacimiento={fecha_nacimiento}&dni={dni}&nombre={nombre}&apellido1={apellido1}&apellido2={apellido2}&tipo_entrada={tipo_entrada}&dinero_actual={dinero_actual}&festival={festival}')
 
             print(f'{r.text} ({r.status_code})')
 
         case '14':
+            nombre=input('Introduce el nombre del usuario: ')
+            dni=input('Introduce su dni: ')
+            r = requests.get(f'{URL}/data/publico_data?nombre={nombre}&dni={dni}')
+            print(r.text)
+
+        case '15':
             print('Cerrando programa)')
             break

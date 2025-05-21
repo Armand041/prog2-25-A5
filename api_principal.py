@@ -478,20 +478,19 @@ def mostrar_trabajadores():
 @app.route('/data/publico', methods=['GET'])
 def mostrar_publico():
     """
-    Devuelve una lista con los nombres y DNI de todas las personas del público.
+    Devuelve una lista con los nombres de todas las personas del público.
 
-    Esta función abre el archivo publico.csv, y extrae los nombres y DNI de cada
-    persona registrada como público. Devuelve una cadena con ambas listas concatenadas
-    de forma legible.
+    Esta función abre el archivo publico.csv, y extrae los nombres de cada
+    persona registrada como público. Devuelve una cadena con la lista.
 
     Returns
     -------
         Un par (respuesta, código de estado):
-        - Mensaje con los nombres y DNI del público y código 200 si se lee correctamente el archivo.
+        - Mensaje con los nombres del público y código 200 si se lee correctamente el archivo.
         - Mensaje de error y código 404 si el archivo publico.csv no se encuentra.
     """
     nombres_publico=[]
-    dni_publico=[]
+
     contador=0
     try:
         with open('publico.csv', 'r') as info:
@@ -501,10 +500,11 @@ def mostrar_publico():
                     contador+=1
                 else:
                     nombres_publico.append(row[2])
-                    dni_publico.append(row[1])
     except FileNotFoundError:
         return 'No encontrado el archivo con los festivales', 404
-    return f'Son publico las personas: {nombres_publico} con dni: {dni_publico} ', 200
+    except IndexError:
+        return 'Error inesperado', 404
+    return f'Son publico las personas: {nombres_publico}', 200
 
 @app.route('/data/anyadir_publico', methods=['POST'])
 def anyadir_publico():
@@ -535,6 +535,39 @@ def anyadir_publico():
 
    except FileNotFoundError:
        return 'No se ha encontrado el archivo de publico', 404
+
+@app.route('/data/publico_data', methods=['GET'])
+def datos_atendiente():
+    """
+        Devuelve una cadena de texto estilizada con los datos de un atendiente.
+
+        Esta función abre el archivo publico.csv, y extrae los datos de la persona indicada.
+
+        Returns
+        -------
+            Un par (respuesta, código de estado):
+            - Mensaje con los datos del atendiente y código 200 si se lee correctamente el archivo.
+            - Mensaje de error y código 404 si el archivo publico.csv no se encuentra.
+            - Mensaje de error y código 404 si no se encuentra el atendiente en el fichero.
+        """
+    nombre = request.args.get('nombre', '')
+    dni = request.args.get('dni', '')
+    contador=0
+    try:
+        with open('publico.csv', 'r') as info:
+            reader = csv.reader(info, delimiter=',')
+            for row in reader:
+                if contador == 0:
+                    contador += 1
+                else:
+                    if row[1]==dni and row[2]==nombre:
+                        texto=f'Fecha de nacimiento: {row[0]}\nDni: {row[1]}\nNombre: {row[2]}\nApellido1: {row[3]}\nApellido2: {row[6]}\nTipo de entrada: {row[4]}\nDinero: {row[5]}\nFestival al que atiende: {row[7]}\n--------------------------------------'
+                        return texto, 200
+            return f'No se encontró {nombre} con dni {dni}', 404
+    except FileNotFoundError:
+        return 'No encontrado el archivo con los atendientes', 404
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
