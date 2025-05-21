@@ -229,6 +229,9 @@ while True:
                                 print('Introduce una hora del día (entre 0 y 23)')
                         except TypeError:
                             print('Por favor, introduzca un número')
+                        except ValueError:
+                            print('Por favor, introduzca un número')
+
                     while True:
                         try:
                             horario_fin=int(input('Introduce la hora de terminar la jornada: '))
@@ -237,6 +240,8 @@ while True:
                             else:
                                 print('Introduce una hora del día (entre 0 y 23)')
                         except TypeError:
+                            print('Por favor, introduzca un número')
+                        except ValueError:
                             print('Por favor, introduzca un número')
                     horario = f'{horario_inicio}:00 - {horario_fin}:00'
                     alquiler = float(input('Introduce el costo del alquiler del servicio: '))
@@ -265,9 +270,11 @@ while True:
                     elif opcion_puesto == '6':
                         entradasSeguridad1 = EntradasSeguridad(nombre, horario, alquiler, lugar, [])
                         festival.anyadir_servicio(entradasSeguridad1)
-
-                    r = requests.put(f'{URL}/data?nombre={festival}&servicio={nombre}')
-                    print(f'{r.text} ({r.status_code})')
+                    try:
+                        r = requests.put(f'{URL}/data?nombre={festival}&servicio={nombre}', headers={'Authorization': f'Bearer {token}'})
+                        print(f'{r.text} ({r.status_code})')
+                    except NameError:
+                        print('No has iniciado sesión, no puedes cambiar un festival sin iniciar sesión.')
 
                 elif opcion_servicio == '2':
                     servicio_introducir_trabjador = seleccionar_servicio_de_festival(festival)
@@ -328,6 +335,8 @@ while True:
                         print('Introduce un año válido (2025 o antes)')
                 except TypeError:
                     print('Por favor, introduzca un número')
+                except ValueError:
+                    print('Por favor, introduzca un número')
             while True:
                 try:
                     mes_nacimiento = int(input('Introduce tu mes de nacimiento: '))
@@ -336,6 +345,8 @@ while True:
                     else:
                         print('Introduce un més válido (1-12)')
                 except TypeError:
+                    print('Por favor, introduzca un número')
+                except ValueError:
                     print('Por favor, introduzca un número')
             while True:
                 try:
@@ -361,6 +372,8 @@ while True:
                         break
                 except TypeError:
                     print('Por favor, introduce sólamente letras, los tipos de entrada son normal o VIP')
+                except ValueError:
+                    print('Por favor, introduzca un número')
 
             while True:
                 try:
@@ -368,6 +381,8 @@ while True:
                     break
                 except TypeError:
                     print('Dato incorrecto, introduce un número')
+                except ValueError:
+                    print('Por favor, introduzca un número')
 
             r = requests.post(f'{URL}/data/anyadir_publico?fecha_nacimiento={fecha_nacimiento}&dni={dni}&nombre={nombre}&apellido1={apellido1}&apellido2={apellido2}&tipo_entrada={tipo_entrada}&dinero_actual={dinero_actual}&festival={festival}')
 
