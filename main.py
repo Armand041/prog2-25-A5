@@ -74,7 +74,7 @@ def seleccionar_trabajador_de_servicio(servicio):
 
 while True:
     opcion = ''
-    opciones = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13','14']
+    opciones = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13','14','15','16']
 
     while opcion not in opciones:
         # Pueden haber más o menos opciones esto es un ejemplo y primera idea
@@ -93,7 +93,8 @@ while True:
         print('12. Mostrar atendientes')
         print('13. Anyadir publico')
         print('14. Mostrar datos atendiente')
-        print('15. Terminar')
+        print('15. Eliminar atendiente')
+        print('16. Terminar')
         opcion = input('Introduce una de las opciones (por número): ')
 
     match opcion:
@@ -324,7 +325,7 @@ while True:
 
         case '13':
 
-            festival =seleccionar_festival().nombre
+            festival = seleccionar_festival()
 
             while True:
                 try:
@@ -395,5 +396,9 @@ while True:
             print(r.text)
 
         case '15':
+            dni = input('Introduce el dni del atendiente a eliminar: ')
+            r = requests.delete(f'{URL}/data/eliminar_publico?dni={dni}')
+            print(f'{r.text}, {r.status_code}')
+        case '16':
             print('Cerrando programa)')
             break

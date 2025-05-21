@@ -567,6 +567,25 @@ def datos_atendiente():
     except FileNotFoundError:
         return 'No encontrado el archivo con los atendientes', 404
 
+@app.route('/data/eliminar_publico', methods=['DELETE'])
+def eliminar_atendiente():
+    try:
+        dni = str(request.args.get('dni', ''))
+        with open('publico.csv', 'r') as publico_read:
+            lineas = publico_read.readlines()
+            lineas_nuevas = [linea for linea in lineas if dni not in linea]
+
+        if lineas_nuevas == lineas:
+            return f'No hay atendiente con dni: {dni}', 404
+
+        else:
+            with open('publico.csv', 'w') as publico_write:
+                for linea in lineas_nuevas:
+                    publico_write.write(linea)
+            return f'Atendiente eliminado con exito', 200
+    except FileNotFoundError:
+        return f'No se ha encontrado el archivo'
+
 
 
 if __name__ == '__main__':
