@@ -20,7 +20,6 @@ anyadir_permisos(): Añade permisos al festival
 
 """""
 
-from typing import List
 
 
 
