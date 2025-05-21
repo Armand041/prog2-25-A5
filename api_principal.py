@@ -1,11 +1,7 @@
 from flask import Flask, request
-from flask_jwt_extended import (JWTManager, create_access_token, jwt_required, get_jwt_identity, get_jwt)
+from flask_jwt_extended import (JWTManager, create_access_token, jwt_required)
 import hashlib
-from festival import Festival
-from publico import Publico
 from Personal.artista import Artista
-from Personal.persona import Persona
-from Personal.staff import Staff
 import csv
 import ast # para pasar str de listas a lista y manejarlo
 from almacenamiento_artista import anadir_artista, eliminar_artista
