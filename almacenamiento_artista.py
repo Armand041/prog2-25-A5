@@ -27,3 +27,37 @@ def anadir_artista(nombre: str, link: str) -> str:
         writer.writerow({'nombre': nombre, 'link': link})
         # Devolvemos un mensaje para asegurarnos que lo hemos añadido correctamente
         return f'¡Artista {nombre} ha sido correctamente almacenado!'
+
+
+def eliminar_artista(nombre: str) -> str:
+    """
+    Función para eliminar artistas a la base de datos local
+
+    Parámetros:
+    -------------
+    nombre:
+        Nombre de spotify del artista, todo en minúscula
+    """
+    # leemos el archivo, apuntando todos los artistas menos el que queramos borrar
+    with open('artistas_disponibles.csv', 'r') as csv_file:
+        reader = csv.DictReader(csv_file)
+        artistas = [(row['nombre'], row['link']) if row['nombre'] != nombre else None for row in reader]
+        try:
+            index_eliminado = artistas.index(None)
+        except ValueError:
+            # Mensaje de error
+            return f'Artista {nombre} no encontrado entre los artistas disponibles.'
+        else:
+            artistas.pop(index_eliminado)
+
+    # Reescribimos el archivo con el reste de artistas
+    with open('artistas_disponibles.csv', 'w') as csv_file:
+        fieldnames = ['nombre', 'link']
+        writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+
+        writer.writerow({'nombre': 'nombre', 'link': 'link'}) # Esta linea evita que se borre la cabecera
+
+        for nom, link in artistas:
+            writer.writerow({'nombre': nom, 'link': link})
+        # Devolvemos un mensaje para asegurarnos que lo hemos borrado correctamente
+        return f'¡Artista {nombre} ha sido correctamente eliminado!'

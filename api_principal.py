@@ -345,7 +345,7 @@ def mostrar_festivales():
 @app.route('/data/artistas', methods=['GET'])
 def datos_artista():
     """
-    Obtiene los datos de un artista específico.
+    Obtiene los datos de un artista específico y de todos (si artista == '')
 
     Recibe el nombre del artista como parámetro desde los argumentos
     de la petición (request.args) y crea un objeto Artista con ese nombre. Este objeto se
@@ -353,12 +353,20 @@ def datos_artista():
 
     Returns
     -------
-        Un par (datos del artista, código de estado 200).
+        Un par (datos del artista, código de estado 200 si todo ha salido correctamente, 404 si no encuentra al artista).
     """
     artista = request.args.get('artista', '')
-    datos=Artista('','',artista,0,'')
-    # en main llamamos a las funciones de mostrar los datos, 'datos' es un objeto de la clase artista
-    return datos, 200
+    if artista == '':
+        with open('artistas_disponibles.csv', 'r') as csv_file:
+            reader = csv.DictReader(csv_file)
+            return 'Artista --- Link\n'+'\n'.join([f'{row['nombre'].capitalize()} -> https://open.spotify.com/artist/{row['link']}' for row in reader]), 200
+    else:
+        artista = ''.join(artista.split('%20'))
+        datos=Artista('','',artista,0,'')
+        if datos.mostrar_canciones_populares() == ['Artista no encontrado']:
+            return f'{artista} no se encuentra entre los artistas disponibles', 404
+        else:
+            return datos.__str__(), 200
 
 @app.route('/data/servicio', methods=['POST'])
 @jwt_required()

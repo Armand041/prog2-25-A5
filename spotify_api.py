@@ -1,8 +1,7 @@
 import spotipy
+import csv
 from spotipy.oauth2 import SpotifyClientCredentials
 from artista_no_encontrado_error import ArtistaNoEncontrado
-from typing import List
-
 
 class InformacionArtista:
     """
@@ -38,9 +37,13 @@ class InformacionArtista:
             Devolverá el link a la página de spotify del artista
     """
 
+    # Leemos los artistas del csv y los escribimos en los artistas
+    __artistas = {}
+    with open('artistas_disponibles.csv', 'r') as csv_file:
+        reader = csv.DictReader(csv_file)
+        for row in reader:
+            __artistas[row['nombre']] = row['link']
 
-
-    __artistas = {'Cosmo Sheldrake': '6hV6oxGLeLFw17DGjIPkYD'}
     __spotify = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials('13806cf7187b4de487777fe679d594e8','c338bbe63d1345e98770e217ab055b61'))
 
     def __init__(self, artista: str) -> None:
@@ -62,14 +65,14 @@ class InformacionArtista:
             String general que sumado a la id del artista nos permitirá acceder al contenido
             de ese artista.
         """
-        if artista not in type(self).__artistas:
+        if artista not in type(self).__artistas.keys():
             raise ArtistaNoEncontrado(artista)
         else:
             self.__artista = artista
             self.__id = type(self).__artistas[self.__artista]
             self.__uri = f'spotify:artist:{self.__id}'
 
-    def albumes(self) -> List[dict]:
+    def albumes(self) -> list[dict]:
         """
         Metodo que obtiene los álbumes del artista
         """
