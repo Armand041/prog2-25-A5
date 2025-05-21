@@ -15,6 +15,21 @@ jwt = JWTManager(app)
 
 @app.route('/signup', methods=['POST'])
 def signup():
+    """
+    Registra un nuevo usuario y guarda sus credenciales en un archivo CSV.
+
+    Obtiene el nombre de usuario y la contraseña desde los argumentos de la petición
+    (request.args). Verifica si el usuario ya existe en el archivo usuarios.csv.
+    Si no existe, calcula el hash de la contraseña y lo guarda junto al nombre de usuario.
+    Si el archivo no existe, se devuelve un error indicando que no se encontró el archivo de usuarios.
+
+    Returns
+    -------
+     Un par (respuesta, código de estado):
+        - 200 si el usuario fue creado correctamente.
+        - 409 si el usuario ya existe.
+        - 404 si el archivo `usuarios.csv` no se encuentra.
+    """
     datos=[]
     new_user = request.args.get('user', '')
     try:
@@ -38,6 +53,23 @@ def signup():
 
 @app.route('/signin', methods=['GET'])
 def signin():
+    """
+    Autentica a un usuario y genera un token JWT.
+
+    Obtiene el nombre de usuario y la contraseña desde los argumentos de la petición
+    (request.args). Verifica si el usuario existe en el archivo usuarios.csv y si
+    la contraseña  también coincide. Si la autenticación es exitosa, se genera y se
+    devuelve un token JWT con el código de estado 200. Si las credenciales son incorrectas,
+    devuelve un mensaje de error con código de estado 401. Si el archivo no existe,
+    se devuelve un error con código de estado 404.
+
+    Returns
+    -------
+        Un par (respuesta, código de estado):
+        - Token JWT y código 200 si las credenciales son válidas.
+        - Mensaje de error y código 401 si las credenciales son incorrectas.
+        - Mensaje de error y código 404 si el archivo usuarios.csv no se encuentra.
+    """
     user = request.args.get('user', '')
     password = request.args.get('password', '')
     hashed = hashlib.sha256(password.encode()).hexdigest()
@@ -54,6 +86,22 @@ def signin():
 # Eliminar usuario, no cerrar sesión
 @app.route('/signout', methods=['DELETE'])
 def signout():
+    """
+    Elimina un usuario del sistema.
+
+    Obtiene el nombre de usuario y la contraseña desde los argumentos de la petición
+    (request.args). Verifica si el usuario existe en el archivo usuarios.csv y si
+    la contraseña coincide. Si el usuario es encontrado y autenticado, este se elimina.
+    Si el archivo no existe, o si el usuario no es encontrado o la contraseña no es
+    correcta, se devuelve un mensaje de error con código de estado 404.
+
+    Returns
+    -------
+        Un par (respuesta, código de estado):
+        - Mensaje de éxito y código 200 si el usuario fue eliminado correctamente.
+        - Mensaje de error y código 404 si el usuario no se encuentra o la contraseña es incorrecta.
+        - Mensaje de error y código 404 si el archivo usuarios.csv no se encuentra.
+    """
     datos_nuevos=[]
     user_found=False
     user = request.args.get('user', '')
@@ -78,6 +126,21 @@ def signout():
 
 @app.route('/data', methods=['GET'])
 def get_datos_festival():
+    """
+   Obtiene la información detallada de un festival específico.
+
+    Lee el nombre del festival desde los argumentos de la petición (request.args)
+    y lo busca en el archivo informacion_festivales.csv. Si encuentra el festival,
+    devuelve un mensaje con su información. Si no encuentra el festival o
+    si el archivono existe, devuelve un mensaje de error.
+
+    Returns
+    -------
+        Un par (respuesta, código de estado):
+        - Mensaje con los detalles del festival y código 200 si se encuentra.
+        - Mensaje de error y código 404 si el festival no fue encontrado.
+        - Mensaje de error y código 404 si el archivo informacion_festivales.csv no se encuentra.
+    """
     festival = request.args.get('festival', '')
     try:
         with open('informacion_festivales.csv', 'r') as festivales:
