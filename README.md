@@ -1,6 +1,6 @@
 # Gestión de festivales
 [//]: # (Incluid aquí la descripción de vuestra aplicación. Por cierto, así se ponen comentarios en Markdown)
-Este proyecto busca simplificar el almacenamiento y estructuración de festivales, para ayudar a clientes y organizadores a tener una mejor idea de la organización de sus eventos musicales favoritos. Permitirá planear, modificar y ejecutar varios festivales en diferentes lugares y tiempos. Añdiendo también una lista de artistas invitados, que contará con la opción de poder escuchar las canciones y comprar entradas para los diferentes festivales. 
+Este proyecto busca simplificar el almacenamiento y estructuración de festivales, para ayudar a clientes y organizadores a tener una mejor idea de la organización de sus eventos musicales favoritos. Permitirá planear, modificar y ejecutar varios festivales en diferentes lugares y tiempos. Añdiendo también una lista de artistas invitados, que contará con la opción de poder escuchar sus canciones. 
 
 ## Autores
 
@@ -39,7 +39,9 @@ Este proyecto busca simplificar el almacenamiento y estructuración de festivale
 
 - A continuación ejecutaremos el fichero 'api_principal.py' 
 
-- Por último, ejecutaremos el ficher 'main.py'
+- Por último, ejecutaremos el fichero 'main.py'
+
+- Si se tiene el archivo ejecutable, solo habría que ejecutar este
 
 [//]: # (Indicad aquí qué habría que hacer para ejecutar vuestra aplicación)
 
@@ -94,7 +96,7 @@ Este proyecto busca simplificar el almacenamiento y estructuración de festivale
     - Parámetros : nombre, servicio, artista, atendiente, fecha, aforo, coste, lugar
 
 
-- Borrar festival 
+- Eiminar festival 
   
     - DELETE
  
@@ -157,7 +159,28 @@ Este proyecto busca simplificar el almacenamiento y estructuración de festivale
 
     - Parámetros: nombre, dni
 
+- Anyadir_publico
+  
+  - POST
+  - No requiere JWT
+  - Parámetros: fecha_nacimiento, dni, nombre, apellido1, apellido2,
+   
+    tipo_entrada, dinero_actual, festival
 
+- Eliminar_atendiente
+  
+  - DELETE
+  - No requiere JWT
+  - Parámetros: dni
+
+- Datos_atendiente
+
+  - GET
+  - No requiere JWT
+  - Parámetros: nombre, dni
+
+   
+    
 ### SERVICIOS 
 
 - Anyadir_servicio

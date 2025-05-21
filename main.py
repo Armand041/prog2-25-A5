@@ -333,7 +333,7 @@ while True:
         case '14':
             try:
                 festival = seleccionar_festival().nombre
-            except AttributeError or TypeError:
+            except AttributeError:
                 print('No hay festival')
                 continue
 

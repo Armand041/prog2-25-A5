@@ -516,38 +516,43 @@ def mostrar_publico():
 
 @app.route('/data/anyadir_publico', methods=['POST'])
 def anyadir_publico():
+    """
+
+    Esta función abre el archivo publico.csv, y escribe los datos del nuevo atendiente
+
+    Returns
+    -------
+        Un par (respuesta, código de estado):
+        - Mensaje de éxito y código 200 si se escribe correctamente el archivo.
+        - Mensaje de error y código 404 si el archivo publico.csv no se encuentra.
+    """
+
+    fecha_nacimiento = request.args.get('fecha_nacimiento', '')
+    dni = request.args.get('dni', '')
+    nombre = request.args.get('nombre', '')
+    apellido1  = request.args.get('apellido1', '')
+    apellido2  = request.args.get('apellido2', '')
+    tipo_entrada  = request.args.get('tipo_entrada', '')
+    dinero_actual = request.args.get('dinero_actual', '')
+    festival=request.args.get('festival', '')
 
 
-   fecha_nacimiento = request.args.get('fecha_nacimiento', '')
-   dni = request.args.get('dni', '')
-   nombre = request.args.get('nombre', '')
-   apellido1  = request.args.get('apellido1', '')
-   apellido2  = request.args.get('apellido2', '')
-   tipo_entrada  = request.args.get('tipo_entrada', '')
-   dinero_actual = request.args.get('dinero_actual', '')
-   festival=request.args.get('festival', '')
+    datos = [fecha_nacimiento,dni,nombre,apellido1,tipo_entrada,dinero_actual,apellido2, festival]
 
-
-   datos = [fecha_nacimiento,dni,nombre,apellido1,tipo_entrada,dinero_actual,apellido2, festival]
-
-
-   try:
+    try:
        # Abrir en modo append para no sobrescribir
        with open('publico.csv', 'a') as publico:
            writer = csv.writer(publico, delimiter=',')
            writer.writerow(datos)  # Escribir una fila
-       return 'Público añadido correctamente', 200
+           return 'Público añadido correctamente', 200
 
 
-
-
-   except FileNotFoundError:
+    except FileNotFoundError:
        return 'No se ha encontrado el archivo de publico', 404
 
 @app.route('/data/publico_data', methods=['GET'])
 def datos_atendiente():
     """
-        Devuelve una cadena de texto estilizada con los datos de un atendiente.
 
         Esta función abre el archivo publico.csv, y extrae los datos de la persona indicada.
 
@@ -577,6 +582,18 @@ def datos_atendiente():
 
 @app.route('/data/eliminar_publico', methods=['DELETE'])
 def eliminar_atendiente():
+    """
+
+        Esta función abre el archivo publico.csv, y sobreescribe el fichero con todas las filas menos
+        la fila del atendiente que queremos eliminar
+
+        Returns
+        -------
+            Un par (respuesta, código de estado):
+            - Mensaje con los datos del atendiente y código 200 si se lee correctamente el archivo.
+            - Mensaje de error y código 404 si el archivo publico.csv no se encuentra.
+            - Mensaje de error y código 404 si no se encuentra el atendiente en el fichero.
+        """
     try:
         dni = str(request.args.get('dni', ''))
         with open('publico.csv', 'r') as publico_read:
@@ -592,7 +609,7 @@ def eliminar_atendiente():
                     publico_write.write(linea)
             return f'Atendiente eliminado con exito', 200
     except FileNotFoundError:
-        return f'No se ha encontrado el archivo'
+        return f'No se ha encontrado el archivo', 404
 
 
 
