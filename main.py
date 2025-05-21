@@ -74,7 +74,7 @@ def seleccionar_trabajador_de_servicio(servicio):
 
 while True:
     opcion = ''
-    opciones = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13','14','15','16']
+    opciones = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13','14','15','16','17']
 
     while opcion not in opciones:
         # Pueden haber más o menos opciones esto es un ejemplo y primera idea
@@ -88,13 +88,13 @@ while True:
         print('8. Mostrar información de un festival')
         print('9. Mostrar datos de un servicio')
         print('10. Mostrar datos de un trabajador')
-        print('11. Mostrar datos de un artista')# Aquí hacemos tambien que te muestre lo de la api que está en la clase artista
-        # podemos añadir tambien que muestre los artistas disponibles
-        print('12. Mostrar atendientes')
-        print('13. Anyadir publico')
-        print('14. Mostrar datos atendiente')
-        print('15. Eliminar atendiente')
-        print('16. Terminar')
+        print('11. Mostrar datos de un artista')
+        print('12. Mostrar todos los artistas')
+        print('13. Mostrar atendientes')
+        print('14. Anyadir publico')
+        print('15. Mostrar datos atendiente')
+        print('16. Eliminar atendiente')
+        print('17. Terminar')
         opcion = input('Introduce una de las opciones (por número): ')
 
     match opcion:
@@ -331,8 +331,11 @@ while True:
 
 
         case '14':
-
-            festival = seleccionar_festival()
+            try:
+                festival = seleccionar_festival().nombre
+            except AttributeError or TypeError:
+                print('No hay festival')
+                continue
 
             while True:
                 try:
