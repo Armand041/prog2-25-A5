@@ -28,9 +28,7 @@ Este proyecto busca simplificar el almacenamiento y estructuración de festivale
 
 - Permitirá acceder a canciones populares de los artistas (API de Spotify o Youtube): Daniel Paredes Valverde
 
-- Acceder a Redes Sociales de los artistas (API Instagram, TikTok): Daniel Paredes Valverde
-
-- Clase Persona, Publico y relaciones Trabajador/Trabajo: Daniel Paredes Valverde 
+- Clase Persona y Publico: Daniel Paredes Valverde 
 
 ## Instrucciones de instalación y ejecución
 
@@ -131,7 +129,24 @@ Este proyecto busca simplificar el almacenamiento y estructuración de festivale
 
     - No requiere JWT
 
-    - Parámetros: artista, datos(object)
+    - Parámetros: artista
+ 
+- Anyadir_artista
+
+    - PUT
+ 
+    - Requiere jwt
+ 
+    - Parámetros: artista, link
+
+ 
+- Quitar_artista
+
+    - DELETE
+ 
+    - Requiere jwt
+ 
+    - Parámetros: artista
     
 
 - Mostrar_publico
