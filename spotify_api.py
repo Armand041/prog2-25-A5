@@ -38,7 +38,8 @@ class InformacionArtista:
             Devolverá el link a la página de spotify del artista
     """
 
-    ##### HAY QUE HACER QUE EL DICCIONARIO SE CREE A PARTIR DE UN CSV #####
+
+
     __artistas = {'Cosmo Sheldrake': '6hV6oxGLeLFw17DGjIPkYD'}
     __spotify = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials('13806cf7187b4de487777fe679d594e8','c338bbe63d1345e98770e217ab055b61'))
 
@@ -85,9 +86,7 @@ class InformacionArtista:
             albumes.extend(resultados['items'])
 
         # Creamos la lista que devolveremos en forma de lista de diccionarios
-        result_album = []
-        for album in albumes:
-            result_album.append({'Album': album['name'], 'Link': album['external_urls']['spotify']})
+        result_album = [{'Album': album['name'], 'Link': album['external_urls']['spotify']} for album in albumes]
         return result_album
 
     def canciones_top(self) -> list[dict]:
