@@ -461,5 +461,5 @@ while True:
             print(f'{r.text}, {r.status_code}')
             log_adder(f'Eliminar público: {dni}', r.status_code, usuario_actual)
         case '19':
-            print('Cerrando programa)')
+            print('Cerrando programa...')
             break
