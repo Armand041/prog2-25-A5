@@ -371,7 +371,6 @@ def datos_artista():
 
 
 @app.route('/data/artistas', methods=['PUT'])
-@jwt_required()
 def anyadir_artista():
     """
     Añadimos un artista al csv de artistas_disponibles. Solo permitido con jwt
@@ -397,7 +396,6 @@ def anyadir_artista():
 
 
 @app.route('/data/artistas', methods=['DELETE'])
-@jwt_required()
 def quitar_artista():
     """
     Eliminamos un artista al csv de artistas_disponibles. Solo permitido con jwt
