@@ -32,6 +32,8 @@ Este proyecto busca simplificar el almacenamiento y estructuración de festivale
 
 ## Instrucciones de instalación y ejecución
 
+#### Instalación Nativa
+
 - Primeramente debemos instalar un entorno virtual a través del fichero 'requirements.txt'.
   Para ello podemos utilizar el comando **pip install -r requirements.txt'** en la terminal de Linux
 
@@ -39,7 +41,13 @@ Este proyecto busca simplificar el almacenamiento y estructuración de festivale
 
 - Por último, ejecutaremos el fichero 'main.py'
 
-- Si se tiene el archivo ejecutable, solo habría que ejecutar este
+#### Uso de Ejecutables
+
+- Ejecutar el archivo api_principal
+
+- Ejecutar el archivo main
+
+- ¡No sacar de la carpeta!
 
 [//]: # (Indicad aquí qué habría que hacer para ejecutar vuestra aplicación)
 
