@@ -127,9 +127,10 @@ while True:
             r = requests.post(f'{URL}/signup?user={usuario}&password={password}')
             if r.status_code == 200:
                 print(f'Usuario {usuario} creado correctamente. \n----------------------------------------')
-            log_adder(f'Registrado usuario: {usuario}',r.status_code,usuario_actual)
+
             else:
                 print(f'Error al crear usuario: {r.status_code} - {r.text}. \n----------------------------------------')
+            log_adder(f'Registrado usuario: {usuario}', r.status_code, usuario_actual)
 
         case'2':
             usuario = input('Usuario: ')
